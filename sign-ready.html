@@ -1,0 +1,979 @@
+<title>Sign Ready</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Sign Ready">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Fraunces:opsz,wght@9..144,600&display=swap">
+<style>
+/* Layout: one calm column, big tap targets, a bottom tab bar. Cool clinic paper, one deep blue accent. */
+:root{
+ --bg:#eef3f5; --card:#ffffff; --fg:#14232c; --mute:#4f626d; --line:#cfdbe1;
+ --accent:#1b5e8c; --accent-ink:#ffffff; --accent-soft:#dcebf5;
+ --good:#21704a; --good-soft:#e1f2e8; --bad:#a83a32; --bad-soft:#f8e4e1; --warm:#8a5a00; --warm-soft:#fbefd6;
+ --sky:#d6e9f4; --grass:#8cc77f; --grass2:#6fae63; --tree:#3f8f5a; --trunk:#7a5638; --wood:#b0855a; --path:#e2d3b5; --water:#7cb8dc; --petal:#e57ba3; --petal2:#f2c94c; --sun:#f6b93b; --cloud:#ffffff; --edge:#6f8794;
+ --shadow:0 1px 2px rgba(20,35,44,.06),0 4px 14px rgba(20,35,44,.05);
+ --body:"Atkinson Hyperlegible",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+ --display:"Fraunces",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#0f181d; --card:#18242b; --fg:#e7eef1; --mute:#a3b4bd; --line:#2c3b44;
+ --accent:#7fb8e0; --accent-ink:#0b1a24; --accent-soft:#1d3444;
+ --good:#7fd1a4; --good-soft:#163428; --bad:#f19a90; --bad-soft:#3a1f1c; --warm:#f0c26a; --warm-soft:#3a2e15;
+ --sky:#132530; --grass:#2e5a3b; --grass2:#264d32; --tree:#4f9e6b; --trunk:#8a6a4c; --wood:#9c7a55; --path:#5b5243; --water:#2f6d93; --petal:#e889ae; --petal2:#e8c25a; --sun:#f2c94c; --cloud:#c9d6dd; --edge:#8aa3b0;
+ --shadow:none; color-scheme:dark}}
+:root[data-theme="dark"]{
+ --bg:#0f181d; --card:#18242b; --fg:#e7eef1; --mute:#a3b4bd; --line:#2c3b44;
+ --accent:#7fb8e0; --accent-ink:#0b1a24; --accent-soft:#1d3444;
+ --good:#7fd1a4; --good-soft:#163428; --bad:#f19a90; --bad-soft:#3a1f1c; --warm:#f0c26a; --warm-soft:#3a2e15;
+ --sky:#132530; --grass:#2e5a3b; --grass2:#264d32; --tree:#4f9e6b; --trunk:#8a6a4c; --wood:#9c7a55; --path:#5b5243; --water:#2f6d93; --petal:#e889ae; --petal2:#e8c25a; --sun:#f2c94c; --cloud:#c9d6dd; --edge:#8aa3b0;
+ --shadow:none; color-scheme:dark}
+[hidden]{display:none!important}
+select,input,textarea{box-sizing:border-box}
+html{font-size:19px;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:1rem;line-height:1.55;
+ padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+ padding-block:0 calc(5.2rem + env(safe-area-inset-bottom,0px))}
+body.insess{padding-bottom:2rem}
+body.insess #tabs{display:none}
+#main{max-width:40rem;margin:0 auto;display:flex;flex-direction:column;gap:1rem;padding-block:1.2rem}
+h1,h2,h3{text-wrap:balance;margin:0;line-height:1.25}
+h1{font-family:var(--display);font-weight:600;font-size:1.75rem}
+h2{font-size:1.25rem}
+h3{font-size:1.15rem}
+p{margin:0}
+.eyebrow{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);font-weight:700}
+.sub{color:var(--mute);margin-top:.35rem}
+.hello{display:flex;flex-direction:column;gap:.25rem;padding-top:.3rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.15rem;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:.75rem;min-width:0}
+.row{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.big{background:var(--accent);color:var(--accent-ink);border:0;border-radius:12px;padding:.85rem 1.2rem;font-weight:700;font-size:1.05rem;min-height:3.1rem;width:100%}
+.big:disabled{opacity:.45;cursor:default}
+.ghost{background:transparent;border:2px solid var(--line);border-radius:12px;padding:.65rem 1rem;font-weight:700;min-height:2.9rem;color:var(--fg)}
+.small{min-height:2.3rem;padding:.35rem .8rem;font-size:.9rem}
+.danger.big{background:var(--bad);color:var(--card)}
+.danger.ghost{color:var(--bad);border-color:var(--bad-soft)}
+.back{align-self:flex-start;background:none;border:0;color:var(--accent);font-weight:700;padding:.3rem 0;min-height:2.4rem}
+.say{background:var(--accent-soft);color:var(--fg);border:0;border-radius:999px;padding:.45rem .9rem;font-size:.92rem;font-weight:700;min-height:2.4rem}
+.big.wait{position:relative;overflow:hidden}
+.big.wait:disabled::after{content:"";position:absolute;inset:auto 0 0 0;height:4px;background:var(--accent-ink);opacity:.6;transform-origin:left;animation:fill var(--wait) linear forwards}
+@keyframes fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@media (prefers-reduced-motion:reduce){.big.wait:disabled::after{animation:none}}
+
+/* home */
+.resume{border-color:var(--accent);background:var(--accent-soft)}
+.fresh h2::before{content:"☀︎ ";color:var(--warm)}
+.next{border-left:0}
+.goalmini{text-align:left;align-items:stretch;gap:.4rem;font:inherit}
+.goalmini .gt{font-family:var(--display);font-weight:600;font-size:1.3rem}
+.gbar,.bar,.prog{display:block;height:.6rem;border-radius:999px;background:var(--line);overflow:hidden}
+.gbar i,.bar i,.prog i{display:block;height:100%;background:var(--good);border-radius:999px}
+.bar{height:.35rem;margin-top:.35rem}
+.goalmini small{color:var(--mute)}
+.units{display:flex;flex-direction:column;gap:.55rem}
+.sect{font-size:1rem;color:var(--mute);text-transform:uppercase;letter-spacing:.06em;margin-top:.6rem}
+.unit,.lesson{display:flex;align-items:center;gap:.85rem;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:.8rem .9rem;text-align:left;width:100%;min-height:4rem}
+.unit:disabled,.lesson:disabled{opacity:.55;cursor:default}
+.ic{flex:none;width:2.6rem;height:2.6rem;border-radius:10px;display:grid;place-items:center;font-size:1.35rem;background:var(--accent-soft);background:color-mix(in srgb,var(--uc,var(--accent)) 16%,var(--card))}
+.ic.big{width:3.4rem;height:3.4rem;font-size:1.8rem}
+.ut{flex:1;min-width:0;display:flex;flex-direction:column}
+.ut b{font-size:1.02rem}
+.ut small{color:var(--mute);font-size:.88rem}
+.tick{color:var(--good);font-weight:700;font-size:1.3rem}
+.lock{font-size:1rem;opacity:.7}
+.final{border-style:dashed}
+.uhead{display:flex;gap:.9rem;align-items:center}
+.lessons{display:flex;flex-direction:column;gap:.55rem}
+.num{flex:none;width:2.2rem;height:2.2rem;border-radius:50%;display:grid;place-items:center;border:2px solid var(--line);font-weight:700}
+.lesson.done .num{background:var(--good);border-color:var(--good);color:var(--card)}
+
+/* session */
+.sess{display:flex;flex-direction:column;gap:.5rem;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding-block:.4rem;z-index:5}
+.shead{display:flex;justify-content:space-between;align-items:center}
+.count{color:var(--mute);font-size:.92rem;font-variant-numeric:tabular-nums}
+.stitle{font-size:.9rem;color:var(--mute);font-weight:700}
+.flag{align-self:flex-start;font-size:.8rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);padding:.2rem .6rem;border-radius:999px}
+.flag.warm,.again .flag{color:var(--warm);background:var(--warm-soft)}
+.read .body{display:flex;flex-direction:column;gap:.7rem;font-size:1.06rem}
+.read .body ul,.read .body ol{margin:0;padding-left:1.3rem;display:flex;flex-direction:column;gap:.35rem}
+.read .body table{border-collapse:collapse;width:100%}
+.read .body td{border-bottom:1px solid var(--line);padding:.45rem .3rem;vertical-align:top}
+.read .body td:first-child{width:30%;font-family:ui-monospace,Menlo,monospace}
+.quote{border-left:4px solid var(--accent);background:var(--accent-soft);padding:.7rem .9rem;border-radius:0 10px 10px 0;font-size:1.04rem}
+.tip{background:var(--warm-soft);border-radius:10px;padding:.7rem .9rem}
+.read.again{border-color:var(--warm)}
+.qtext{font-size:1.22rem}
+.answers{display:flex;flex-direction:column;gap:.6rem}
+.how{color:var(--mute);font-size:.93rem}
+.opt{display:flex;gap:.75rem;align-items:center;text-align:left;width:100%;background:var(--card);border:2px solid var(--line);border-radius:12px;padding:.8rem .9rem;min-height:3.3rem}
+.opt .key{flex:none;width:1.8rem;height:1.8rem;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);font-weight:700;font-size:.85rem}
+.opt:disabled{cursor:default}
+.opt.ok,.oitem.ok,.sortrow.ok,.mrow.ok{border-color:var(--good);background:var(--good-soft)}
+.opt.no,.oitem.no,.sortrow.no,.mrow.no{border-color:var(--bad);background:var(--bad-soft)}
+.opt.ok .key{background:var(--good);color:var(--card)}
+.opt.no .key{background:var(--bad);color:var(--card)}
+.tf{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.tfb{justify-content:center;font-weight:700;font-size:1.1rem}
+.sortrow,.mrow{border:2px solid var(--line);border-radius:12px;padding:.7rem;display:flex;flex-direction:column;gap:.5rem}
+.stxt{font-weight:700}
+.chips,.seg{display:flex;flex-wrap:wrap;gap:.45rem}
+.chip{border:2px solid var(--line);background:var(--card);border-radius:999px;padding:.45rem .85rem;min-height:2.6rem;font-size:.95rem}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700}
+.fix{font-size:.92rem}
+.olist{display:flex;flex-direction:column;gap:.5rem}
+.oitem{display:flex;gap:.75rem;align-items:center;text-align:left;background:var(--card);border:2px solid var(--line);border-radius:12px;padding:.7rem .8rem;min-height:3.2rem;width:100%}
+.oitem .n{flex:none;width:2rem;height:2rem;border-radius:50%;border:2px dashed var(--line);display:grid;place-items:center;font-weight:700}
+.oitem.picked{border-color:var(--accent)}
+.oitem.picked .n{background:var(--accent);border:0;color:var(--accent-ink)}
+.mrow label{font-weight:700}
+select,input[type=text],input[type=search],textarea{font:inherit;color:var(--fg);background:var(--card);border:2px solid var(--line);border-radius:10px;padding:.6rem .7rem;width:100%;min-height:2.9rem;min-width:0}
+.fb{border-radius:12px;padding:1rem;display:flex;flex-direction:column;gap:.6rem}
+.fb.good{background:var(--good-soft)}
+.fb.bad{background:var(--bad-soft)}
+.verdict{font-weight:700;font-size:1.15rem}
+.fb.good .verdict{color:var(--good)}
+.fb.bad .verdict{color:var(--bad)}
+.fb ul,.fb ol{margin:.3rem 0 0;padding-left:1.3rem}
+.note{color:var(--warm);font-weight:700}
+
+/* results */
+.result{gap:.9rem}
+.score{display:flex;align-items:baseline;gap:.8rem;flex-wrap:wrap}
+.score b{font-family:var(--display);font-size:3rem;font-weight:600;color:var(--bad);font-variant-numeric:tabular-nums}
+.score.pass b{color:var(--good)}
+.score span{color:var(--mute)}
+.plain{margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:.4rem}
+.ticks{list-style:none;padding-left:0}
+.ticks li::before{content:"✓  ";color:var(--good);font-weight:700}
+.missed li{border-bottom:1px solid var(--line);padding-bottom:.5rem}
+.celebrate{border-color:var(--good);background:var(--good-soft)}
+
+/* goal path */
+.path{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.path li{display:flex;gap:.9rem;align-items:center;padding:.65rem 0;position:relative}
+.path li:not(:last-child)::after{content:"";position:absolute;left:1.15rem;top:3rem;bottom:-.65rem;width:3px;background:var(--line);transform:translateX(-50%)}
+.path li.done:not(:last-child)::after{background:var(--good)}
+.path .dot{flex:none;width:2.3rem;height:2.3rem;border-radius:50%;display:grid;place-items:center;font-weight:700;border:3px solid var(--line);background:var(--card);z-index:1}
+.path li.done .dot{background:var(--good);border-color:var(--good);color:var(--card)}
+.path li.now .dot{border-color:var(--accent);color:var(--accent)}
+.path li div{flex:1;min-width:0;display:flex;flex-direction:column}
+.path small{color:var(--mute)}
+.path li:last-child b{font-family:var(--display);font-weight:600;font-size:1.15rem}
+
+/* look it up */
+.search{display:flex;flex-direction:column;gap:.3rem}
+.search label{font-weight:700}
+.look{display:flex;flex-direction:column;gap:.5rem}
+.lk{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:.2rem .9rem}
+.lk summary{font-weight:700;padding:.75rem 0;cursor:pointer;display:flex;justify-content:space-between;gap:.5rem;min-height:2.6rem;align-items:center}
+.lk summary small{color:var(--mute);font-weight:400}
+.lk ul{margin:0 0 .6rem;padding-left:1.1rem;display:flex;flex-direction:column;gap:.45rem}
+.lk .say{margin-bottom:.8rem}
+mark{background:var(--warm-soft);color:var(--fg);border-radius:3px}
+.empty{color:var(--mute)}
+
+/* settings */
+.sets{gap:1.1rem}
+.field{display:flex;flex-direction:column;gap:.4rem}
+.field label,.lab{font-weight:700}
+.tog{flex-direction:row;align-items:center;justify-content:space-between;gap:1rem}
+.tog input{width:1.6rem;height:1.6rem;flex:none;accent-color:var(--accent)}
+.code{font-family:ui-monospace,Menlo,monospace;font-size:.75rem;word-break:break-all;resize:vertical}
+.msg{color:var(--good);font-weight:700;min-height:1.2em}
+
+
+/* build the hospital */
+.build{gap:.6rem}
+.build .bt{font-family:var(--display);font-weight:600;font-size:1.3rem}
+.hs{display:block;width:100%;height:auto;max-width:100%;border-radius:10px;background:var(--sky)}
+.hs .p{transition:opacity .6s}
+.hs .ghost{fill:none!important;stroke:var(--edge);stroke-width:1.2;stroke-dasharray:4 4;opacity:.45}
+.hs .ghost *{fill:none!important;stroke:var(--edge);stroke-width:1.2;stroke-dasharray:4 4}
+.hs .ghost text{stroke:none;fill:var(--edge)!important;opacity:.6}
+.hs .new{animation:pop 1.2s ease-out}
+@keyframes pop{0%{opacity:0;transform:translateY(-8px)}100%{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.hs .new{animation:none}}
+.build small{color:var(--mute)}
+.newpiece{background:var(--good-soft);border-radius:12px;padding:.8rem;display:flex;flex-direction:column;gap:.5rem}
+.newpiece b{color:var(--good)}
+
+
+/* sign cards */
+.signword{font-family:var(--display);font-weight:600;font-size:2.2rem;line-height:1.1;color:var(--accent)}
+.how{background:var(--accent-soft);border-radius:12px;padding:.8rem .9rem;display:flex;flex-direction:column;gap:.3rem}
+.how .lab,.practise .lab{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--mute)}
+.how p:last-child{font-size:1.12rem}
+.watch{display:inline-flex;align-items:center;gap:.35rem;font-weight:700;color:var(--accent);text-decoration:none;border:2px solid var(--accent);border-radius:999px;padding:.45rem .95rem;min-height:2.6rem}
+.watch.sm{padding:.1rem .6rem;min-height:0;font-size:.82rem;border-width:1.5px;margin-left:.3rem}
+.practise{display:flex;flex-direction:column;gap:.35rem;border-top:1px dashed var(--line);padding-top:.8rem}
+.practise:empty{display:none}
+.how2{color:var(--mute);font-size:.95rem}
+.dots{display:flex;gap:.8rem}
+.dot{width:3.2rem;height:3.2rem;border-radius:50%;border:3px dashed var(--accent);background:var(--card);color:var(--card);font-weight:700;font-size:1.3rem}
+.dot.on{background:var(--good);border:3px solid var(--good);animation:popin .35s ease-out}
+@keyframes popin{0%{transform:scale(.6)}70%{transform:scale(1.12)}100%{transform:scale(1)}}
+.dotmsg{color:var(--good);font-weight:700;min-height:1.2em}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.hand{display:block;width:min(240px,100%);height:auto;margin:0 auto}
+.hand .palm{fill:var(--path);stroke:var(--edge);stroke-width:1.5}
+.hand .tipc{fill:var(--accent)}
+.hand .tipt{fill:var(--accent-ink);font:700 15px var(--body)}
+.az li b{margin-right:.3rem}
+/* streak */
+.streak{gap:.8rem}
+.sk{display:flex;gap:.8rem;align-items:center}
+.sk b{font-family:var(--display);font-weight:600;font-size:1.35rem;display:block}
+.sk small{color:var(--mute)}
+.flame{font-size:2.2rem;line-height:1;filter:grayscale(1) opacity(.45)}
+.streak.lit .flame,.streakup .flame{filter:none;animation:flick 2.4s ease-in-out infinite}
+@keyframes flick{0%,100%{transform:scale(1) rotate(-2deg)}50%{transform:scale(1.08) rotate(2deg)}}
+.flame.big{font-size:2.8rem}
+.week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:.2rem}
+.wd{display:flex;flex-direction:column;align-items:center;gap:.2rem;font-size:.78rem;color:var(--mute);font-weight:700}
+.wd i{font-style:normal;width:min(2rem,100%);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;border:2px solid var(--line);color:var(--card);font-size:.9rem}
+.wd.on i{background:var(--warm);border-color:var(--warm)}
+.wd.now i{border-color:var(--warm);border-style:dashed}
+.wd.future{opacity:.55}
+.streakup{display:flex;gap:.8rem;align-items:center;background:var(--warm-soft);border-radius:12px;padding:.8rem}
+.streakup b{font-size:1.15rem;color:var(--warm)}
+.nudge{border-style:dashed}
+.okc{color:var(--good);font-weight:700}
+@media (prefers-reduced-motion:reduce){.streak.lit .flame,.streakup .flame,.dot.on{animation:none}}
+
+/* tab bar */
+#tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--card);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);
+ padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+#tabs button{background:none;border:0;padding:.55rem .2rem .6rem;display:flex;flex-direction:column;align-items:center;gap:.1rem;font-size:.78rem;color:var(--mute);min-height:3.6rem}
+#tabs button span{font-size:1.3rem;line-height:1}
+#tabs button[aria-current="page"]{color:var(--accent);font-weight:700}
+</style>
+<main id="main" aria-live="polite"></main>
+<nav id="tabs" aria-label="Sections">
+ <button type="button" data-t="home"><span aria-hidden="true">⌂</span>Home</button>
+ <button type="button" data-t="goal"><span aria-hidden="true">⚑</span>My goal</button>
+ <button type="button" data-t="look"><span aria-hidden="true">⌕</span>Look it up</button>
+ <button type="button" data-t="set"><span aria-hidden="true">⚙︎</span>Settings</button>
+</nav>
+<script>
+/* Sign Ready – BSL course content.
+   Sign descriptions are written from the British-Sign.co.uk BSL dictionary, which has an
+   illustration and video for every sign (linked from each card). */
+var DICT='https://www.british-sign.co.uk/bsl-dictionary/';
+var SIGNS={};
+function R(h){return {t:'read',h:h}}
+/* a sign card: word, how to make it, a memory tip, dictionary page */
+function G(key,word,how,tip,slug){SIGNS[key]={w:word,how:how,tip:tip||'',slug:slug||key};
+ return {t:'read',sign:key,h:'<p class="signword">'+word+'</p><div class="how"><p class="lab">How to sign it</p><p>'+how+'</p></div>'+(tip?'<p class="tip">'+tip+'</p>':'')+
+ '<p><a class="watch" href="'+DICT+(slug||key)+'" target="_blank" rel="noopener">▶ Watch “'+word+'” being signed</a></p><div class="practise"></div>'}}
+function M(id,q,o,a,why){return {t:'mc',id:id,q:q,o:o,a:a,why:why}}
+function TF(id,q,a,why){return {t:'tf',id:id,q:q,a:a,why:why}}
+function S(id,q,bins,items,why){return {t:'sort',id:id,q:q,bins:bins,items:items,why:why}}
+function O(id,q,items,why){return {t:'order',id:id,q:q,items:items,why:why}}
+function P(id,q,pairs,why){return {t:'match',id:id,q:q,pairs:pairs,why:why}}
+
+var COURSE=[
+
+/* ------------------------------------------------ 1 */
+{id:'start',title:'Getting started',icon:'👋',color:'#2f6fb5',stage:'Know how BSL works',lessons:[
+ {id:'st1',title:'What BSL is',cards:[
+  R('<h3>A language of its own</h3><p><b>British Sign Language (BSL)</b> is the language of Deaf people in the UK. It has its <b>own grammar</b>. It isn’t English said with your hands.</p><p>It became a <b>legally recognised language</b> in Great Britain with the British Sign Language Act 2022.</p>'),
+  TF('s1','BSL is just English words made with your hands, in the same order.',false,'BSL has its own grammar and word order. It’s a full language.'),
+  R('<h3>Your hands and your face</h3><ul><li>Your <b>dominant hand</b> (the one you write with) does most of the moving. If you’re left-handed, just mirror the signs.</li><li>Your <b>face</b> is part of the language. When you ask a question, show it on your face: eyebrows up or down.</li><li>Many signs are made while <b>mouthing the English word</b> silently.</li></ul>'),
+  M('s2','You’re left-handed. What should you do?',['Mirror the signs, so your left hand leads','Always use your right hand','Use both hands for everything','Only fingerspell'],0,'Your dominant hand leads, so a left-hander mirrors each sign.'),
+  TF('s3','Facial expression is part of BSL, for example when asking a question.',true,'Yes. Your face shows whether it’s a question, and how strongly you mean something.'),
+  R('<h3>Signs vary around the country</h3><p>Like accents, some signs (especially <b>numbers and days</b>) are different in different parts of the UK.</p><p>This course teaches common versions. If a Deaf person signs something differently, <b>copy them</b>. They’ll be glad you tried.</p>'),
+  TF('s4','If a Deaf patient uses a different sign from the one you learned, you should follow theirs.',true,'Yes. Signs vary by region, and copying theirs is respectful.')
+ ]},
+ {id:'st2',title:'Being Deaf aware at the desk',cards:[
+  R('<h3>Getting someone’s attention</h3><p>If a Deaf person isn’t looking at you, <b>wave</b> where they can see it, or <b>gently tap their shoulder</b>.</p><p>Calling their name from across the waiting room won’t work.</p>'),
+  M('da1','A Deaf patient is reading a magazine and it’s their turn. What do you do?',['Wave where they can see, or tap their shoulder gently','Call their name louder','Wait until they look up by chance','Ask another patient to shout'],0,'Get attention visually or with a gentle tap.'),
+  R('<h3>Help them see you</h3><ul><li><b>Face them</b> and keep your <b>mouth uncovered</b> (no hand, pen or mask in the way if you can).</li><li>Stand where there’s <b>good light on your face</b>, not with a bright window behind you.</li><li>Speak clearly at a normal pace. <b>Don’t shout</b> or exaggerate your lip patterns.</li><li>If they don’t understand, <b>say it a different way</b> rather than repeating the same words.</li></ul>'),
+  S('da2','Helpful or not helpful?',['Helpful','Not helpful'],[['Facing them',0],['Good light on your face',0],['Shouting',1],['Covering your mouth',1],['Saying it a different way',0],['Standing with a bright window behind you',1]],'Face them, light on your face, mouth clear, and rephrase.'),
+  R('<h3>Pen, paper and interpreters</h3><ul><li>Keep a <b>pen and paper</b> handy. Keep written English short and simple, because English may be their second language.</li><li>For appointments, the patient may need a <b>BSL interpreter</b>. Don’t rely on family members to interpret.</li><li>The NHS <b>Accessible Information Standard</b> means practices should record and meet a patient’s communication needs.</li></ul>'),
+  TF('da3','A patient’s teenage son can always act as their interpreter at a doctor’s appointment.',false,'Family members shouldn’t be relied on. A qualified BSL interpreter should be booked.'),
+  M('da4','You write a note for a Deaf patient. How should you write it?',['Short and simple','Long and detailed','Using medical abbreviations','In capitals only'],0,'Keep it short and simple. English may be their second language.')
+ ]},
+ {id:'st3',title:'Fingerspelling: the vowels',cards:[
+  R('<h3>Spelling with two hands</h3><p>When there’s no sign for something (like a name), you <b>fingerspell</b> it. BSL fingerspelling uses <b>two hands</b>. (American Sign Language uses one.)</p><div class="vowels" aria-label="Vowels: thumb A, index E, middle I, ring O, little finger U"></div><p>The <b>vowels</b> are easiest. Hold your other hand up, palm towards you, fingers spread. Touch a fingertip with your <b>index finger</b>:</p><ul><li>Thumb = <b>A</b></li><li>Index finger = <b>E</b></li><li>Middle finger = <b>I</b></li><li>Ring finger = <b>O</b></li><li>Little finger = <b>U</b></li></ul><div class="practise"></div>'),
+  P('fv1','Match each finger to its vowel.',[['Thumb','A'],['Index finger','E'],['Middle finger','I'],['Ring finger','O'],['Little finger','U']],'Thumb A, index E, middle I, ring O, little U: in alphabet order from the thumb.'),
+  M('fv2','You touch the ring finger. Which letter is that?',['O','I','U','E'],0,'Ring finger = O.'),
+  TF('fv3','BSL fingerspelling uses two hands.',true,'Yes. That’s one way it differs from American Sign Language.'),
+  R('<h3>The whole alphabet</h3><p>The consonants each have their own shape. They’re much easier to learn from pictures, so open the chart and the fingerspelling player and practise <b>your own name</b> first.</p><p><a class="watch" href="https://www.british-sign.co.uk/bsl-fingerspelling-alphabet-chart" target="_blank" rel="noopener">▶ Open the fingerspelling chart</a></p><p><a class="watch" href="https://www.british-sign.co.uk/fingerspell" target="_blank" rel="noopener">▶ Open the fingerspelling player</a></p><div class="practise"></div>'),
+  M('fv4','When would you fingerspell?',['For a name, or a word you don’t know the sign for','For every single word','Only for numbers','Never at work'],0,'Fingerspelling fills the gaps: names, places, and words you don’t know yet.')
+ ]}
+]},
+
+/* ------------------------------------------------ 2 */
+{id:'greet',title:'Hello and manners',icon:'🙂',color:'#1f8a70',stage:'Greet people politely',lessons:[
+ {id:'gr1',title:'Hello, goodbye and how are you?',cards:[
+  G('hello','Hello','Wave your hand near the side of your head.','The same wave means <b>hello</b>, <b>hi</b> and <b>goodbye</b>.','goodbye'),
+  TF('g1','In BSL, hello and goodbye can use the same wave.',true,'Yes. A wave near the side of the head works for both.'),
+  G('howareyou','How are you?','Fingertips of both flat hands brush up your chest, then both hands move forward with <b>thumbs up</b>. Use a questioning face.','Think: “how is everything in here?” (your chest), then “good?” (thumbs up).','how-are-you'),
+  M('g2','Which sign is “How are you?”',['Flat hands brush up the chest, then move forward with thumbs up','A wave near the side of the head','A fist circles on the chest','Index finger taps the wrist'],0,'Brush up the chest, then thumbs up and forward, with a questioning face.'),
+  G('good','Good','Closed hand with the <b>thumb up</b>, making a short forward movement. You can use one hand or both.','Answering “How are you?” with this means “I’m good.”'),
+  M('g3','Someone signs “How are you?” What could you sign back?',['Good (thumb up, short forward movement)','Sorry','Toilet','Monday'],0,'Thumb up with a little forward push means good.'),
+  TF('g4','To ask a question in BSL, your face should look like you’re asking.',true,'Yes, the questioning face is part of the sign.')
+ ]},
+ {id:'gr2',title:'Please, thank you and sorry',cards:[
+  G('thanks','Please / Thank you','Flat hand, fingertips start on your <b>chin</b>, then the hand moves <b>down and away</b> from you.','Please and thank you use the <b>same sign</b>. <b>Mouth</b> the word so they know which one you mean.','thanks'),
+  TF('m1','In BSL, please and thank you share the same sign.',true,'Yes. Mouthing the word tells them which one you mean.'),
+  M('m2','How does someone tell your “please” apart from “thank you”?',['From the word you mouth','From which hand you use','From how fast you sign','They can’t'],0,'Mouth the English word silently as you sign.'),
+  G('sorry','Sorry','A <b>closed hand</b> (fist) makes a <b>circle on your chest</b>.','Like rubbing your heart: “I feel bad.”'),
+  M('m3','Which sign is “Sorry”?',['A fist makes a circle on your chest','Fingertips from chin, moving down and away','A wave near your head','Thumbs up coming together'],0,'Sorry: a fist circles on your chest.'),
+  G('welcome','Welcome / You’re welcome','Both open hands, palms facing you, <b>bend at the knuckles</b> in small repeated movements, as if beckoning someone in.','Use it to welcome someone, or to reply to “thank you”.','youre-welcome'),
+  P('m4','Match the meaning to the sign.',[['Thank you','Fingertips from chin, down and away'],['Sorry','Fist circles on chest'],['You’re welcome','Open hands beckon, bending at the knuckles'],['Hello','Wave near the side of the head']],'Four polite signs you’ll use every day.')
+ ]}
+]},
+
+/* ------------------------------------------------ 3 */
+{id:'ask',title:'Asking questions',icon:'❓',color:'#6c4fb3',stage:'Ask simple questions',lessons:[
+ {id:'q1',title:'What, where and who',cards:[
+  R('<h3>Question signs</h3><p>Question words usually come at the <b>end</b> of a BSL sentence, and your <b>eyebrows</b> help show it’s a question.</p><p>For example, “What’s your name?” is signed <b>NAME, YOUR, WHAT?</b></p>'),
+  G('what','What?','Hold your <b>index finger</b> up in front of you and shake it in small side-to-side movements, with a questioning face.','A little “wagging” finger asks “what?”'),
+  G('where','Where?','Both <b>flat hands, palms up</b>, make small circles in front of you, with a questioning face.','Like looking around for something with your palms open.'),
+  G('who','Who?','Hold your <b>index finger upright</b> at the side of your head and make <b>small circles</b>.','The finger stays by your head, unlike “what?”, which shakes in front of you.'),
+  P('q1a','Match the question to its sign.',[['What?','Index finger shakes side to side in front of you'],['Where?','Palms up, small circles'],['Who?','Index finger circles at the side of your head']],'What = shake, where = palms up circling, who = finger circling by your head.'),
+  TF('q1b','In BSL, question words often come at the end of the sentence.',true,'Yes, e.g. NAME YOUR WHAT?'),
+  M('q1c','Which question uses both palms facing up?',['Where?','Who?','What?','How old?'],0,'Where? Palms up, small circles.')
+ ]},
+ {id:'q2',title:'Asking someone’s name',cards:[
+  G('name','Name','Tips of your <b>index and middle fingers</b> touch your <b>forehead</b>, then your wrist twists so the fingers point forward, out in front of your face.','Two fingers from the forehead: your name comes from your head.'),
+  G('your','Your','Closed hand makes a small movement <b>out towards the person</b> you mean.','Point the movement at whoever “your” is.'),
+  O('q2a','Put “What’s your name?” in BSL order.',['NAME','YOUR','WHAT?'],'In BSL it’s NAME, YOUR, WHAT? The question word goes last.'),
+  M('q2b','Which sign is “Name”?',['Two fingertips touch your forehead, then twist forward','Fist circles on your chest','Index finger taps your wrist','Wave by your head'],0,'Name: index and middle fingers from the forehead, twisting forward.'),
+  G('howold','How old are you?','Open hand facing your face, <b>fingers wiggle in front of your nose</b>, then <b>point</b> with your index finger at the person.','Handy at the desk when you need someone’s age.','how-old-are-you'),
+  TF('q2c','To ask “How old are you?”, you wiggle your fingers in front of your nose and then point at the person.',true,'Yes, that’s the sign.')
+ ]}
+]},
+
+/* ------------------------------------------------ 4 */
+{id:'nums',title:'Numbers 1 to 10',icon:'🔢',color:'#b5651d',stage:'Sign numbers',lessons:[
+ {id:'n1',title:'One to five',cards:[
+  R('<h3>Counting on one hand</h3><p>Numbers <b>1 to 5</b> are made by holding up fingers, palm facing you. Numbers are one of the signs that <b>vary most by region</b>, so if a patient uses a different one, follow theirs.</p>'),
+  G('one','1','Index finger up.'),
+  G('two','2','Index and middle fingers up.'),
+  G('three','3','Index, middle and ring fingers up.','Not the thumb: 3 uses the three middle fingers.'),
+  G('four','4','Index, middle, ring and little fingers up. Thumb tucked in.'),
+  G('five','5','All four fingers <b>and</b> the thumb up.'),
+  S('n1a','Which fingers?',['Uses the thumb','No thumb'],[['5',0],['4',1],['3',1],['2',1]],'Only 5 uses the thumb. 1 to 4 count up from the index finger.'),
+  M('n1b','Index, middle and ring fingers up. Which number?',['3','2','4','8'],0,'Three fingers, no thumb: 3.')
+ ]},
+ {id:'n2',title:'Six to ten',cards:[
+  R('<h3>Six to nine: the thumb leads</h3><p>From 6, the <b>thumb</b> comes in, and the hand is held <b>sideways</b> (horizontal).</p>'),
+  G('six','6','Closed hand with the <b>thumb up</b>.','Careful: <b>good</b> is also a thumb up, but it moves forward. 6 just stays still.'),
+  G('seven','7','<b>Thumb and index finger</b> out, hand held sideways.'),
+  G('eight','8','<b>Thumb, index and middle</b> fingers out, hand held sideways.'),
+  G('nine','9','<b>Thumb, index, middle and ring</b> fingers out, hand held sideways.'),
+  G('ten','10','Open hand with a <b>small twist</b> in front of you.'),
+  O('n2a','Put these in order from smallest to biggest.',['Thumb up, still (6)','Thumb and index sideways (7)','Thumb, index and middle sideways (8)','Thumb and three fingers sideways (9)','Open hand with a twist (10)'],'6 is the thumb, then add one finger each time, then 10 twists.'),
+  M('n2b','Thumb, index and middle fingers out, held sideways. Which number?',['8','3','7','9'],0,'Thumb + 2 fingers sideways = 8.'),
+  TF('n2c','A still thumb-up means 6, but a thumb-up moving forward means “good”.',true,'Yes, the movement makes the difference.'),
+  G('number','Number','Knuckles of a closed hand <b>tap your chin twice</b>.','Useful for “phone number” or “NHS number”.')
+ ]}
+]},
+
+/* ------------------------------------------------ 5 */
+{id:'time',title:'Days and times',icon:'📅',color:'#d35400',stage:'Talk about days and times',lessons:[
+ {id:'t1',title:'Day, morning and afternoon',cards:[
+  G('time','Time','Index finger <b>taps the top of your other wrist</b> twice, where a watch would be.','Tap your “watch”.'),
+  G('day','Day','Both open hands, palms facing you, start <b>crossed</b> and move <b>up and apart</b> in an arc.','Like the sun coming up.'),
+  G('morning','Morning','Bent hand: fingertips <b>tap the far side of your chest, then the near side</b>.'),
+  G('afternoon','Afternoon','Tips of <b>index and middle fingers touch your chin</b>, then the wrist twists so they point forward.'),
+  P('t1a','Match the word to its sign.',[['Time','Tap the top of your wrist'],['Day','Crossed hands rise and open in an arc'],['Morning','Bent hand taps across your chest'],['Afternoon','Two fingers from the chin, twisting forward']],'Time, day, morning, afternoon.'),
+  M('t1b','Which one is like tapping your watch?',['Time','Day','Morning','Name'],0,'Time: tap the top of your wrist.'),
+  TF('t1c','Afternoon and name both use two fingers, but name starts at the forehead and afternoon starts at the chin.',true,'Yes, the starting place changes the meaning.')
+ ]},
+ {id:'t2',title:'Yesterday, next and birthday',cards:[
+  G('yesterday','Yesterday','Index finger makes <b>one small movement backwards</b> from the corner of your mouth.','Backwards = the past.'),
+  G('next','Next','Hand in front of you with the <b>thumb out</b>, small twist at the wrist.','Combine with a day: “next Monday”.'),
+  G('birthday','Birthday','Flat hands, <b>palms up</b>, start near your waist, move forward, then up in an arc.','Useful for date of birth checks at the desk.'),
+  M('t2a','Which sign moves backwards from the corner of your mouth?',['Yesterday','Next','Birthday','Sorry'],0,'Yesterday moves backwards, into the past.'),
+  M('t2b','A patient needs to give their date of birth. Which sign would help you ask?',['Birthday','Toilet','Sorry','Friend'],0,'Birthday, with a questioning face, or ask them to write it down.')
+ ]},
+ {id:'t3',title:'Days of the week',cards:[
+  R('<h3>Days can vary</h3><p>Days of the week vary a lot around the UK. Here are some common versions. Several use <b>fingerspelling</b>.</p>'),
+  G('monday','Monday','Fingerspell <b>M twice</b>.','M = three fingers of your dominant hand laid on the palm of your other hand.'),
+  G('friday','Friday','Start with a fingerspelled <b>F</b> (two fingers across two fingers), then the top fingers make <b>small circles</b> on the still ones.'),
+  G('saturday','Saturday','Flat hand, palm up, <b>taps your other arm twice</b> just above the elbow.'),
+  G('sunday','Sunday','Both open hands <b>tap palm to palm twice</b> in front of you.','Like hands together for church.'),
+  G('weekend','Weekend','Interlock your fingers to make a fingerspelled <b>W</b>, then close both hands together.'),
+  P('t3a','Match the day to its sign.',[['Monday','Fingerspell M twice'],['Friday','F shape, top fingers circle'],['Saturday','Palm taps the arm above the elbow'],['Sunday','Palms tap together twice']],'Monday M-M, Friday F, Saturday arm tap, Sunday palms together.'),
+  TF('t3b','Every Deaf person in the UK signs the days of the week the same way.',false,'Days vary a lot by region. Follow the person you’re talking to.')
+ ]}
+]},
+
+/* ------------------------------------------------ 6 */
+{id:'surgery',title:'At the surgery',icon:'🩺',color:'#c0392b',stage:'Help Deaf patients at the desk',lessons:[
+ {id:'su1',title:'Deaf, sign and interpreter',cards:[
+  G('deaf','Deaf','Index and middle fingers touch your <b>ear</b>.'),
+  G('sign','Sign (language)','Both open hands, palms facing each other, make <b>forward circles</b> in front of you.','“Do you sign?” = SIGN, YOU? with a questioning face.'),
+  G('interpreter','Interpreter','Both hands make a <b>V</b> (index and middle fingers) and move <b>backwards and forwards alternately</b> in front of your chest.','Two Vs passing the message back and forth.'),
+  M('su1a','Which sign is “Interpreter”?',['Two V hands moving back and forth alternately','Two fingers touching the ear','Open hands circling forward','Fist circling on the chest'],0,'Interpreter: two Vs moving back and forth.'),
+  M('su1b','Two fingers touching the ear means…',['Deaf','Hear','Name','Phone'],0,'Deaf: index and middle fingers touch the ear.'),
+  TF('su1c','“Sign” is made with both open hands circling forward.',true,'Yes.')
+ ]},
+ {id:'su2',title:'Help, sit and toilet',cards:[
+  G('help','Help','Closed hand with the <b>thumb up</b> rests on the <b>palm of your other flat, upturned hand</b>.','“Can I help?” = HELP, with a questioning face.'),
+  G('sit','Sit (down)','Both flat hands, palms down, one on top of the other, make <b>one downward movement</b>.','Point to the chairs first, then sign SIT.'),
+  G('toilet','Toilet','Index finger <b>taps the inside edge of your other palm</b> twice.'),
+  P('su2a','Match the word to its sign.',[['Help','Thumb-up fist resting on the other palm'],['Sit','Flat hands, one on the other, move down once'],['Toilet','Index finger taps the edge of the other palm']],'Help, sit, toilet.'),
+  M('su2b','A patient has checked in. You want them to take a seat. Which sign?',['Sit','Toilet','Help','Deaf'],0,'Point to the seats, then sign SIT.')
+ ]},
+ {id:'su3',title:'Ill, pain and nurse',cards:[
+  G('ill','Ill / Sick','<b>Little fingers</b> of both hands <b>brush down your chest</b>.','','sick'),
+  G('pain','Pain','Both open hands, palms facing you, move <b>up and down alternately</b> in front of you.','Your face shows how bad: a big grimace means a lot of pain.'),
+  R('<h3>Where does it hurt?</h3><p>Sign <b>PAIN</b>, then <b>WHERE?</b> with a questioning face.</p><p>BSL often shows things <b>where they are on the body</b>, so the patient may sign pain right at the place it hurts.</p>'),
+  O('su3a','Put “Where does it hurt?” in order.',['PAIN','WHERE?'],'PAIN, then WHERE? with a questioning face.'),
+  G('nurse','Nurse','Your <b>thumb draws a cross</b> on your other shoulder.','Think of a red cross on a sleeve.'),
+  M('su3b','Which sign is “Nurse”?',['Thumb draws a cross on your shoulder','Little fingers brush down the chest','Index finger taps the wrist','Open hands move up and down'],0,'Nurse: thumb draws a cross on the shoulder.'),
+  TF('su3c','In BSL your facial expression can show how bad the pain is.',true,'Yes, a grimace shows a lot of pain.'),
+  G('health','Health / Healthy','Both open hands start on your <b>chest</b>, then move forward, closing into <b>thumbs up</b>.','Same start as “How are you?”, but the hands start still on the chest.','healthy')
+ ]},
+ {id:'su4',title:'Person and number',cards:[
+  G('person','Person','Index finger and thumb held slightly apart, <b>move down</b> in front of you.'),
+  R('<h3>Putting it together at the desk</h3><ul><li><b>Can I help?</b> → HELP? (questioning face)</li><li><b>What’s your name?</b> → NAME, YOUR, WHAT?</li><li><b>Date of birth?</b> → BIRTHDAY? then let them write it</li><li><b>Please sit.</b> → point to the chairs, PLEASE, SIT</li><li><b>Do you need an interpreter?</b> → INTERPRETER, WANT? (WANT is in the next unit)</li></ul><p>And always have <b>pen and paper</b> ready.</p>'),
+  O('su4a','Order the signs for “Please sit.”',['Point to the chairs','PLEASE','SIT'],'Point, please, sit.'),
+  M('su4b','Which sign would you use to ask for someone’s phone number?',['Number (knuckles tap the chin)','Time','Birthday','Nurse'],0,'Number: knuckles tap the chin twice.')
+ ]}
+]},
+
+/* ------------------------------------------------ 7 */
+{id:'chat',title:'Keeping the conversation going',icon:'💬',color:'#0e7c86',stage:'Keep a conversation going',lessons:[
+ {id:'c1',title:'Again, slow and want',cards:[
+  G('again','Again','Make a <b>V</b> with index and middle fingers, then twist your wrist in small back-and-forth movements.','“Again, please?” when you didn’t catch it.'),
+  G('slow','Slow','Flat hand starts on top of your other wrist and <b>brushes slowly up the forearm</b>.','“Slower, please” is really useful as a learner.'),
+  G('want','Want','Flat hand moves <b>down your chest</b>, then twists out.'),
+  P('c1a','Match the word to its sign.',[['Again','V shape twisting back and forth'],['Slow','Hand brushes slowly up the forearm'],['Want','Hand moves down the chest then twists out']],'Again, slow, want.'),
+  M('c1b','You didn’t understand. Which two signs help most?',['Again and slow','Monday and Sunday','Nurse and toilet','Six and seven'],0,'“Again, slow, please” helps any learner.')
+ ]},
+ {id:'c2',title:'Agree, learn, read and friend',cards:[
+  G('agree','Agree','Both hands with <b>thumbs up come together</b>.'),
+  G('learn','Learn','Hand at the side of your head moves <b>back slightly while the fingers close together</b>.','Like putting knowledge into your head.'),
+  G('read','Read','Other hand open, palm towards you; your <b>V fingers zig-zag</b> above it like eyes reading a page.'),
+  G('friend','Friend','<b>Clasp your hands together</b> and move them up and down a little.'),
+  P('c2a','Match the word to its sign.',[['Agree','Two thumbs-up come together'],['Learn','Fingers close at the side of the head'],['Read','V fingers zig-zag over the other palm'],['Friend','Hands clasped, small up and down']],'Agree, learn, read, friend.'),
+  M('c2b','How would you tell someone “I’m learning to sign”?',['LEARN, SIGN (pointing to yourself)','TOILET, NURSE','MONDAY, AGAIN','PAIN, WHERE'],0,'Point to yourself, LEARN, SIGN. Deaf people usually love it when you try.')
+ ]}
+]},
+
+/* ------------------------------------------------ 8 */
+{id:'together',title:'Putting it all together',icon:'🤝',color:'#34495e',stage:'Hold a short conversation',lessons:[
+ {id:'p1',title:'A conversation at the desk',cards:[
+  R('<h3>Practise a whole conversation</h3><p>Here is a short exchange at reception. Sign each line out loud to yourself (or in a mirror):</p><ol><li><b>You:</b> HELLO. HELP? (questioning face)</li><li><b>Patient:</b> (fingerspells their name)</li><li><b>You:</b> BIRTHDAY? (then pen and paper)</li><li><b>You:</b> THANK YOU. PLEASE SIT. (point to the chairs)</li><li><b>You:</b> NURSE … (point to the corridor when it’s time)</li></ol><div class="practise"></div>'),
+  O('p1a','Put the conversation in a sensible order.',['HELLO. HELP?','NAME, YOUR, WHAT?','BIRTHDAY?','THANK YOU. PLEASE SIT.'],'Greet, ask name, check birthday, thank and seat.'),
+  M('p1b','A patient signs very fast and you lose track. What do you do?',['Sign SORRY, AGAIN, SLOW, PLEASE','Pretend you understood','Shout','Walk away'],0,'Asking for it again, slowly, is completely normal.'),
+  TF('p1c','If a conversation gets too hard, it’s fine to switch to pen and paper or book an interpreter.',true,'Yes. The goal is clear communication, not perfect signing.')
+ ]},
+ {id:'p2',title:'Mixed practice',cards:[
+  R('<h3>Mixed practice</h3><p>These questions mix everything you’ve learned. If one trips you up, you’ll see the sign again.</p>'),
+  P('p2a','Match the sign to the meaning.',[['Fist circles on the chest','Sorry'],['Fingertips from chin, down and away','Thank you'],['Thumb draws a cross on the shoulder','Nurse'],['Two fingers touch the ear','Deaf'],['Palms up, small circles','Where?']],'Sorry, thank you, nurse, deaf, where.'),
+  M('p2b','Which sign uses knuckles tapping the chin?',['Number','Afternoon','Name','Thank you'],0,'Number.'),
+  M('p2c','Which number is a still thumb up?',['6','1','5','10'],0,'6. Moving forward would be “good”.'),
+  S('p2d','Is it a question sign?',['Question sign','Not a question'],[['What?',0],['Where?',0],['Who?',0],['Sorry',1],['Toilet',1]],'What, where and who are question signs.'),
+  TF('p2e','Hello and goodbye can both be a wave near the side of your head.',true,'Yes.')
+ ]}
+]}
+];
+
+/* look-it-up: every sign, plus Deaf awareness tips */
+var LOOKUP=[
+ ['Deaf awareness at the desk',['Get attention with a wave they can see, or a gentle tap on the shoulder.','Face them, keep your mouth clear, and have good light on your face.','Speak clearly at a normal pace. Don’t shout or exaggerate.','If they don’t understand, say it a different way.','Keep pen and paper ready. Keep written English short and simple.','Book a BSL interpreter for appointments. Don’t rely on family members.','The NHS Accessible Information Standard means communication needs should be recorded and met.']],
+ ['How BSL works',['BSL has its own grammar. Question words usually go at the end (NAME YOUR WHAT?).','Your dominant hand leads. Left-handers mirror the signs.','Your face is part of the language: eyebrows show questions, expressions show how much.','Many signs are made while mouthing the English word.','Signs (especially numbers and days) vary by region. Copy the person you’re talking to.']],
+ ['Fingerspelling vowels',['Touch the fingertips of your other hand with your index finger:','Thumb = A · Index = E · Middle = I · Ring = O · Little = U','Full alphabet chart: british-sign.co.uk/bsl-fingerspelling-alphabet-chart']],
+ ['Useful phrases',['Can I help? → HELP? (questioning face)','What’s your name? → NAME, YOUR, WHAT?','How old are you? → wiggle fingers in front of nose, point','Where does it hurt? → PAIN, WHERE?','Please sit → point to the chairs, PLEASE, SIT','Again, slowly please → AGAIN, SLOW, PLEASE','I’m learning to sign → point to yourself, LEARN, SIGN']]
+];
+
+/* A "quick check" at the end of each lesson: one question per sign taught, so every sign gets recalled. */
+(function(){function plain(h){return h.replace(/<[^>]+>/g,'');}
+ var keys=Object.keys(SIGNS);
+ COURSE.forEach(function(u){u.lessons.forEach(function(l){var ex=[];
+  l.cards.forEach(function(c){if(c.t!=='read'||!c.sign)return;var k=c.sign,x=SIGNS[k];
+   var pool=keys.filter(function(o){return o!==k&&plain(SIGNS[o].how)!==plain(x.how);});
+   for(var i=pool.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=pool[i];pool[i]=pool[j];pool[j]=t;}
+   ex.push({t:'mc',id:'w_'+k,sg:k,q:'Which is the sign for “'+plain(x.w)+'”?',o:[plain(x.how)].concat(pool.slice(0,3).map(function(o){return plain(SIGNS[o].how);})),a:0,why:'<b>'+x.w+'</b>: '+x.how});});
+  if(ex.length)l.cards=l.cards.concat([R('<h3>Quick check</h3><p>Let’s see if you can remember how each sign from this lesson is made. If you’re not sure, take a guess. You’ll see the sign again.</p>')],ex);});});})();
+
+</script>
+<script>
+/* Reception Ready – learning engine */
+(function(){
+'use strict';
+var KEY='sign_ready_v1', INT=[1,1,2,4,7,14], PASS=80;
+var QS={},LES={},UNI={},SIGNCARD={};
+COURSE.forEach(function(u,ui){u.i=ui;UNI[u.id]=u;u.lessons.forEach(function(l,li){l.u=u;l.i=li;LES[l.id]=l;var teach=null;
+ l.cards.forEach(function(c){if(c.t==='read'){teach=c;if(c.sign)SIGNCARD[c.sign]=c;}else QS[c.id]={c:c,u:u,l:l,teach:(c.sg&&SIGNCARD[c.sg])||teach};});});});
+function uq(u){var a=[];u.lessons.forEach(function(l){l.cards.forEach(function(c){if(c.t!=='read')a.push(c.id);});});return a;}
+
+/* ---------- saving ---------- */
+function blank(){return {v:1,name:'',done:{},box:{},ut:{},fin:{best:0,passed:false},missed:{},days:{},cur:null,best:0,push:null,
+ set:{size:1,theme:'auto',auto:false,open:false,sound:true}};}
+var S=load();
+function load(){try{var s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&s.v===1){var b=blank();for(var k in b)if(!(k in s))s[k]=b[k];for(k in b.set)if(!(k in s.set))s.set[k]=b.set[k];return s;}}catch(e){}return blank();}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+document.addEventListener('visibilitychange',function(){if(document.hidden)save();});
+window.addEventListener('pagehide',save);
+setInterval(save,60000);
+function today(){var d=new Date();return Math.floor((d.getTime()-d.getTimezoneOffset()*60000)/86400000);}
+function markDay(){S.days[today()]=1;}
+function streak(){var d=today(),n=0;if(!S.days[d])d--;while(S.days[d]){n++;d--;}return n;}
+
+/* ---------- helpers ---------- */
+var $=function(s,r){return (r||document).querySelector(s);};
+function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;}
+function btn(cls,html,fn){var b=el('button',cls,html);b.type='button';b.addEventListener('click',fn);return b;}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function range(n){var a=[];for(var i=0;i<n;i++)a.push(i);return a;}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function strip(h){var d=document.createElement('div');d.innerHTML=h;return (d.textContent||'').replace(/\s+/g,' ').trim();}
+function plural(n,w){return n+' '+w+(n===1?'':'s');}
+var main=$('#main');
+function scrollTop(){try{window.scrollTo(0,0);}catch(e){}}
+
+/* ---------- speech ---------- */
+var voice=null;
+function pickVoice(){try{var v=speechSynthesis.getVoices();voice=v.filter(function(x){return /en-GB/i.test(x.lang);})[0]||v.filter(function(x){return /^en/i.test(x.lang);})[0]||null;}catch(e){}}
+if('speechSynthesis' in window){pickVoice();try{speechSynthesis.onvoiceschanged=pickVoice;}catch(e){}}
+function speak(text){if(!('speechSynthesis' in window))return;try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(text);u.rate=0.9;if(voice){u.voice=voice;u.lang=voice.lang;}else u.lang='en-GB';speechSynthesis.speak(u);}catch(e){}}
+function hush(){try{speechSynthesis.cancel();}catch(e){}}
+function sayBtn(getText){if(!('speechSynthesis' in window))return el('span');return btn('say','<span aria-hidden="true">🔊</span> Read it to me',function(){speak(getText());});}
+
+/* ---------- settings ---------- */
+function applySet(){var r=document.documentElement;r.style.fontSize=[17,19,22,25][S.set.size]+'px';
+ if(S.set.theme==='auto')r.removeAttribute('data-theme');else r.setAttribute('data-theme',S.set.theme);}
+applySet();
+
+/* ---------- unlocking ---------- */
+function unitPassed(u){return !!(S.ut[u.id]&&S.ut[u.id].passed);}
+function unitOpen(u){return S.set.open||u.i===0||unitPassed(COURSE[u.i-1]);}
+function lessonOpen(l){return unitOpen(l.u)&&(S.set.open||l.i===0||!!S.done[l.u.lessons[l.i-1].id]);}
+function lessonsDone(u){return u.lessons.every(function(l){return S.done[l.id];});}
+function allPassed(){return COURSE.every(unitPassed);}
+function learned(){return Object.keys(S.box).filter(function(id){return QS[id];});}
+function due(){var t=today();return learned().filter(function(id){return S.box[id].due<=t;})
+ .sort(function(a,b){return S.box[a].b-S.box[b].b||S.box[a].due-S.box[b].due;});}
+function tricky(){return learned().filter(function(id){var r=S.box[id];return r.w>0&&r.b<3;});}
+
+/* ---------- navigation ---------- */
+var tabs=$('#tabs');
+function setTab(name){Array.prototype.forEach.call(tabs.querySelectorAll('button'),function(b){b.setAttribute('aria-current',b.dataset.t===name?'page':'false');});}
+tabs.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
+ if(S.cur&&!confirmLeave(function(){go(b.dataset.t);}))return; go(b.dataset.t);});
+function go(t){hush();({home:home,goal:goalView,look:lookView,set:setView})[t]();}
+var leaveOK=false;
+function confirmLeave(then){ /* inside a session: pausing is safe, progress is kept */
+ if(!$('.sess'))return true; save(); then(); return false;}
+function shell(tab,isSession){hush();main.innerHTML='';document.body.classList.toggle('insess',!!isSession);setTab(tab);scrollTop();}
+
+
+/* ---------- grow the garden ---------- */
+function F(c){return 'style="fill:var(--'+c+')"';}
+var PARTS=[
+ ['the lawn','<rect x="0" y="150" width="360" height="70" '+F('grass')+'/><rect x="0" y="150" width="360" height="6" '+F('grass2')+'/>'],
+ ['the garden path','<path d="M168 220C172 200 150 186 176 160h16c-22 26 6 40 4 60z" '+F('path')+'/>'],
+ ['the fence','<g '+F('wood')+'>'+[8,40,72,104,136,214,246,278,310,342].map(function(x){return '<rect x="'+x+'" y="128" width="8" height="26" rx="2"/>';}).join('')+'<rect x="0" y="134" width="150" height="4"/><rect x="0" y="146" width="150" height="4"/><rect x="210" y="134" width="150" height="4"/><rect x="210" y="146" width="150" height="4"/></g>'],
+ ['a bench','<g '+F('wood')+'><rect x="226" y="164" width="44" height="5" rx="1"/><rect x="226" y="156" width="44" height="4" rx="1"/><rect x="230" y="169" width="3" height="10"/><rect x="263" y="169" width="3" height="10"/></g>'],
+ ['a young tree','<rect x="58" y="128" width="5" height="34" '+F('trunk')+'/><circle cx="60" cy="118" r="17" '+F('tree')+'/>'],
+ ['the pink flowers','<g>'+[92,104,116,128,140].map(function(x,i){return '<rect x="'+(x-.75)+'" y="'+(172+i%2*3)+'" width="1.5" height="10" '+F('tree')+'/><circle cx="'+x+'" cy="'+(170+i%2*3)+'" r="4.5" '+F('petal')+'/><circle cx="'+x+'" cy="'+(170+i%2*3)+'" r="1.6" '+F('sun')+'/>';}).join('')+'</g>'],
+ ['the yellow flowers','<g>'+[206,218,230,242,254,266].map(function(x,i){return '<rect x="'+(x-.75)+'" y="'+(192+i%2*3)+'" width="1.5" height="10" '+F('tree')+'/><circle cx="'+x+'" cy="'+(190+i%2*3)+'" r="4" '+F('petal2')+'/>';}).join('')+'</g>'],
+ ['the pond','<ellipse cx="306" cy="196" rx="40" ry="13" '+F('water')+'/><ellipse cx="296" cy="193" rx="12" ry="2.5" '+F('cloud')+' opacity=".5"/>'],
+ ['the ducks','<g><ellipse cx="292" cy="196" rx="7" ry="4" '+F('cloud')+'/><circle cx="297" cy="191" r="3" '+F('cloud')+'/><path d="M299.5 191l4 1-4 1z" '+F('sun')+'/><ellipse cx="318" cy="199" rx="6" ry="3.5" '+F('cloud')+'/><circle cx="322" cy="194.5" r="2.6" '+F('cloud')+'/><path d="M324 194.5l3.5 1-3.5 1z" '+F('sun')+'/></g>'],
+ ['the sunflowers','<g>'+[16,30].map(function(x,i){var y=100+i*10;return '<rect x="'+(x-1)+'" y="'+y+'" width="2" height="'+(60-i*10)+'" '+F('tree')+'/><circle cx="'+x+'" cy="'+y+'" r="8" '+F('petal2')+'/><circle cx="'+x+'" cy="'+y+'" r="3.5" '+F('trunk')+'/>';}).join('')+'</g>'],
+ ['the big oak tree','<rect x="318" y="96" width="10" height="56" '+F('trunk')+'/><circle cx="323" cy="82" r="28" '+F('tree')+'/><circle cx="302" cy="96" r="16" '+F('tree')+'/><circle cx="342" cy="98" r="15" '+F('tree')+'/>'],
+ ['the bird box','<rect x="316" y="104" width="14" height="14" '+F('wood')+'/><path d="M314 105l9-8 9 8z" '+F('trunk')+'/><circle cx="323" cy="111" r="2.5" '+F('trunk')+'/>'],
+ ['the bushes','<ellipse cx="160" cy="152" rx="16" ry="10" '+F('tree')+'/><ellipse cx="200" cy="152" rx="14" ry="9" '+F('tree')+'/><ellipse cx="110" cy="154" rx="12" ry="7" '+F('grass2')+'/>'],
+ ['the butterflies','<g '+F('petal')+'><path d="M120 92c-6-8-12-2-6 3 6 4 6-3 6-3zm0 0c6-8 12-2 6 3-6 4-6-3-6-3z"/><path d="M200 110c-5-6-10-1-5 2 5 3 5-2 5-2zm0 0c5-6 10-1 5 2-5 3-5-2-5-2z" '+F('petal2')+'/></g>'],
+ ['the sunshine','<circle cx="44" cy="40" r="18" '+F('sun')+'/><g style="stroke:var(--sun);stroke-width:3;stroke-linecap:round">'+[0,45,90,135,180,225,270,315].map(function(a){var r=a*Math.PI/180;return '<line x1="'+(44+Math.cos(r)*24).toFixed(1)+'" y1="'+(40+Math.sin(r)*24).toFixed(1)+'" x2="'+(44+Math.cos(r)*31).toFixed(1)+'" y2="'+(40+Math.sin(r)*31).toFixed(1)+'"/>';}).join('')+'</g>'],
+ ['the clouds','<g '+F('cloud')+'><ellipse cx="160" cy="40" rx="22" ry="10"/><ellipse cx="176" cy="34" rx="15" ry="10"/><ellipse cx="248" cy="58" rx="18" ry="8"/><ellipse cx="260" cy="53" rx="12" ry="8"/></g>'],
+ ['the rainbow','<g fill="none" stroke-width="5" opacity=".85"><path d="M110 150a90 90 0 0 1 180 0" style="stroke:var(--petal)"/><path d="M116 150a84 84 0 0 1 168 0" style="stroke:var(--petal2)"/><path d="M122 150a78 78 0 0 1 156 0" style="stroke:var(--grass)"/><path d="M128 150a72 72 0 0 1 144 0" style="stroke:var(--water)"/></g>'],
+ ['the celebration bunting','<path d="M0 8Q180 34 360 8" fill="none" style="stroke:var(--edge);stroke-width:1.2"/>'+[20,50,80,110,140,170,200,230,260,290,320,346].map(function(x,i){var y=8+26*(1-Math.pow((x-180)/180,2));return '<path d="M'+(x-8)+' '+(y-1).toFixed(1)+'h16l-8 13z" '+F(['petal','petal2','water','grass'][i%4])+'/>';}).join('')]
+];
+function buildPts(){var p=0;COURSE.forEach(function(u){u.lessons.forEach(function(l){if(S.done[l.id])p++;});if(unitPassed(u))p++;});return p;}
+var BUILD_MAX=(function(){var n=0;COURSE.forEach(function(u){n+=u.lessons.length+1;});return n;})();
+function builtCount(){var n=Math.min(PARTS.length-1,Math.ceil(buildPts()*(PARTS.length-1)/BUILD_MAX));return n+(S.fin.passed?1:0);}
+function hospitalSVG(n,fresh){var g='';PARTS.forEach(function(p,i){var cls=i<n?(fresh&&i>=fresh[0]&&i<fresh[1]?'p new':'p'):'p ghost';g+='<g class="'+cls+'">'+p[1]+'</g>';});
+ return '<svg class="hs" viewBox="0 0 360 220" role="img" aria-label="Your garden: '+n+' of '+PARTS.length+' things planted">'+g+'</svg>';}
+function nextPieceText(n){if(n>=PARTS.length)return 'Your garden is finished. Well done!';
+ if(n===PARTS.length-1)return 'Last thing: <b>'+PARTS[n][0]+'</b>. Pass the final test to put it up.';
+ var need=Math.floor(n*BUILD_MAX/(PARTS.length-1))+1,have=buildPts(),left=Math.max(1,need-have);
+ return 'Next: <b>'+PARTS[n][0]+'</b>, after '+(left===1?'1 more lesson or test':left+' more lessons or tests')+'.';}
+function buildCard(){var n=builtCount();var c=el('section','card build');
+ c.innerHTML='<span class="eyebrow">Grow your garden</span><b class="bt">'+(n===0?'Every lesson plants something new':n>=PARTS.length?'Your garden is in full bloom':n+' of '+PARTS.length+' things planted')+'</b>'+hospitalSVG(n)+'<small>'+nextPieceText(n)+'</small>';
+ return c;}
+function newPieceBox(before){var n=builtCount();if(n<=before)return null;var names=PARTS.slice(before,n).map(function(p){return p[0];});
+ var b=el('div','newpiece','<p><b>New in your garden:</b> '+names.join(' and ')+'.</p>'+hospitalSVG(n,[before,n]));return b;}
+
+/* ---------- sound effects (made in the browser, no files) ---------- */
+var AC=null;
+function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)();}catch(e){return null;}}if(AC.state==='suspended'){try{AC.resume();}catch(e){}}return AC;}
+function tone(f,t0,dur,type,vol){var a=ac();if(!a)return;var t=a.currentTime+t0,o=a.createOscillator(),g=a.createGain();o.type=type||'sine';o.frequency.setValueAtTime(f,t);
+ g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(vol||0.18,t+0.015);g.gain.exponentialRampToValueAtTime(0.0001,t+dur);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+dur+0.05);}
+var SFX={right:[[659,0,.14],[988,.09,.32]],wrong:[[247,0,.22,'triangle',.16],[196,.13,.34,'triangle',.16]],tap:[[880,0,.07,'sine',.07]],soft:[[740,0,.06,'sine',.05]],pop:[[1046,0,.06,'sine',.08]],
+ done:[[523,0,.14],[659,.12,.14],[784,.24,.14],[1047,.36,.55]],streak:[[392,0,.1,'triangle'],[523,.09,.1,'triangle'],[659,.18,.1,'triangle'],[1047,.28,.5,'triangle',.14]]};
+function sfx(n){if(!S.set.sound)return;(SFX[n]||[]).forEach(function(x){tone(x[0],x[1],x[2],x[3],x[4]);});}
+
+/* ---------- practise taps on sign cards ---------- */
+function practiseDots(box,onDone){var n=3,got=0;
+ var sg=box.parentNode&&box.parentNode.querySelector('.signword');box.innerHTML='<p class="lab">'+(sg?'Now copy it':'Now have a go')+'</p><p class="how2">'+(sg?'Make the sign yourself. Tap a circle each time you do it.':'Practise it yourself. Tap a circle each time you have a go.')+'</p>';
+ var row=el('div','dots');for(var i=0;i<n;i++){(function(i){var d=btn('dot','<span class="sr">Practice '+(i+1)+'</span>',function(){if(d.classList.contains('on')||i!==got)return;d.classList.add('on');d.innerHTML='✓';got++;sfx(got===n?'right':'pop');if(got===n){msg.textContent='Lovely. You’ve made it three times.';onDone();}});row.appendChild(d);})(i);}
+ box.appendChild(row);var msg=el('p','dotmsg','');box.appendChild(msg);}
+
+/* ---------- vowel hand picture ---------- */
+function vowelSVG(){var f=[['A',62,118,-50],['E',96,52,-14],['I',126,40,0],['O',156,48,12],['U',182,72,26]];
+ var g='<svg viewBox="0 0 240 230" class="hand" role="img" aria-label="An open hand, palm facing you. Thumb A, index finger E, middle finger I, ring finger O, little finger U."><path d="M78 214c-14-30-18-62-12-96 6-34 28-56 62-56s58 20 62 56c4 34-2 66-16 96z" class="palm"/>';
+ f.forEach(function(x){var L=x[0]==='A'?50:x[0]==='U'?52:72;g+='<g transform="translate('+(x[0]==='A'?78:x[1])+' '+(x[0]==='A'?150:118)+') rotate('+x[3]+')"><rect x="-11" y="'+(-L)+'" width="22" height="'+(L+14)+'" rx="11" class="palm"/></g>';});
+ f.forEach(function(x){var r=x[3]*Math.PI/180,L=x[0]==='A'?50:x[0]==='U'?52:72,bx=x[0]==='A'?78:x[1],by=x[0]==='A'?150:118;var tx=bx+Math.sin(r)*(L-6),ty=by-Math.cos(r)*(L-6);
+  g+='<circle cx="'+tx.toFixed(1)+'" cy="'+ty.toFixed(1)+'" r="13" class="tipc"/><text x="'+tx.toFixed(1)+'" y="'+(ty+5.5).toFixed(1)+'" text-anchor="middle" class="tipt">'+x[0]+'</text>';});
+ return g+'</svg>';}
+
+/* ---------- daily streak ---------- */
+function ymd(d){d=d||new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function weekDots(){var t=today(),now=new Date(),dow=(now.getDay()+6)%7,h='';for(var i=0;i<7;i++){var d=t-dow+i;var cls=S.days[d]?'on':d===t?'now':d>t?'future':'';h+='<span class="wd '+cls+'"><i>'+(S.days[d]?'✓':'')+'</i>'+'MTWTFSS'[i]+'</span>';}return h;}
+function streakCard(){var st=streak(),doneToday=!!S.days[today()];var c=el('section','card streak'+(doneToday?' lit':''));
+ c.innerHTML='<div class="sk"><span class="flame" aria-hidden="true">🔥</span><div><b>'+(st?st+'-day streak':'Start a streak today')+'</b><small>'+(doneToday?'Done for today. See you tomorrow!':st?'Do one lesson or the refresher today to keep it going.':'Finish one lesson today to light the flame.')+(S.best>1?' · Best: '+S.best+' days':'')+'</small></div></div><div class="week" aria-label="This week">'+weekDots()+'</div>';
+ return c;}
+function streakBox(st){var b=el('div','streakup','<span class="flame big" aria-hidden="true">🔥</span><div><b>'+(st===1?'Streak started!':st+'-day streak!')+'</b><p>'+(st===1?'Come back tomorrow to make it 2.':'You’ve practised '+st+' days in a row. Brilliant.')+'</p></div>');return b;}
+
+/* ---------- daily reminder notifications (Web Push via the app’s own server) ---------- */
+var API='api/';
+function isIOS(){return /iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);}
+function standalone(){return window.navigator.standalone===true||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches);}
+function pushOK(){return !!window.SR_HOSTED&&'serviceWorker' in navigator&&'PushManager' in window&&'Notification' in window&&location.protocol==='https:';}
+function b64u(s){s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';var r=atob(s),a=new Uint8Array(r.length);for(var i=0;i<r.length;i++)a[i]=r.charCodeAt(i);return a;}
+function lastDay(){var ks=Object.keys(S.days).map(Number).sort(function(a,b){return a-b;});if(!ks.length)return null;var d=new Date(ks[ks.length-1]*86400000);return d.toISOString().slice(0,10);}
+function post(path,body){return fetch(API+path,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body),keepalive:true}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();});}
+function pushOn(time){return Notification.requestPermission().then(function(p){if(p!=='granted')throw new Error('denied');
+  return navigator.serviceWorker.ready;}).then(function(reg){return fetch(API+'vapid').then(function(r){if(!r.ok)throw new Error('server');return r.json();}).then(function(k){
+   return reg.pushManager.getSubscription().then(function(old){return old||reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64u(k.key)});});});})
+  .then(function(sub){return post('subscribe',{sub:sub.toJSON(),time:time,tz:Intl.DateTimeFormat().resolvedOptions().timeZone||'Europe/London',last:lastDay(),streak:streak(),name:S.name||''});})
+  .then(function(j){S.push={id:j.id,time:time};save();return j;});}
+function pushOff(){var id=S.push&&S.push.id;S.push=null;save();
+ return navigator.serviceWorker.ready.then(function(reg){return reg.pushManager.getSubscription();}).then(function(sub){if(sub)return sub.unsubscribe();}).catch(function(){}).then(function(){if(id)return post('unsubscribe',{id:id}).catch(function(){});});}
+function pushPractised(){if(!S.push||!S.push.id)return;post('practised',{id:S.push.id,last:lastDay(),streak:streak(),name:S.name||''}).catch(function(){});}
+function pushNudge(){if(S.push||!Object.keys(S.done).length)return null;if(!(pushOK()||isIOS()))return null;
+ var c=el('section','card nudge');c.innerHTML='<h2>🔔 Get a daily reminder</h2><p>A gentle nudge on your phone each day, so your streak keeps going.</p>';
+ c.appendChild(btn('ghost','Set up reminders',function(){go('set');setTimeout(function(){var r=$('#rem');if(r)r.scrollIntoView({behavior:'smooth'});},100);}));return c;}
+function reminderCard(){var c=el('section','card');c.id='rem';
+ var times=[];for(var h=7;h<=21;h++){times.push(String(h).padStart(2,'0')+':00');if(h<21)times.push(String(h).padStart(2,'0')+':30');}
+ function label(t){var h=+t.slice(0,2),m=t.slice(3);return (h%12||12)+(m==='00'?'':':'+m)+(h<12?'am':'pm');}
+ function paint(){c.innerHTML='<h2>Daily reminder</h2>';var msg=el('p','msg','');
+  if(!pushOK()){c.appendChild(el('p','',isIOS()&&!standalone()?'To get reminders on an iPhone, first add Sign Ready to your Home Screen: tap the <b>Share</b> button in Safari, then <b>Add to Home Screen</b>. Then open it from the new icon and come back here. (Needs iOS 16.4 or newer.)':'Reminders work in the Sign Ready app on your phone. Open it from its own web address, add it to your Home Screen, and turn them on there.'));return;}
+  if(S.push){c.appendChild(el('p','','<span class="okc">✓ On.</span> You’ll get a reminder at <b>'+label(S.push.time)+'</b> on days you haven’t practised yet, and a last nudge at 8:30pm if your streak is about to end.'));
+   var row=el('div','row');row.appendChild(btn('ghost','Send a test reminder',function(){post('test',{id:S.push.id}).then(function(){msg.textContent='Sent. It should appear in a few seconds.';},function(){msg.textContent='Couldn’t reach the reminder server. Check you’re online.';});}));
+   row.appendChild(btn('ghost danger','Turn off',function(){pushOff().then(paint);}));c.appendChild(row);c.appendChild(msg);return;}
+  c.appendChild(el('p','','Pick a time and we’ll send a reminder on days you haven’t practised yet. If your streak is about to end, you’ll get one last nudge at 8:30pm.'));
+  var f=el('div','field');f.innerHTML='<label for="rtime">Remind me at</label>';var sel=el('select');sel.id='rtime';sel.innerHTML=times.map(function(t){return '<option value="'+t+'"'+(t==='18:00'?' selected':'')+'>'+label(t)+'</option>';}).join('');f.appendChild(sel);c.appendChild(f);
+  var b=btn('big','Turn on reminders',function(){b.disabled=true;msg.textContent='Asking your phone for permission…';pushOn(sel.value).then(function(){sfx('right');paint();},function(e){b.disabled=false;msg.textContent=String(e.message)==='denied'?'Notifications are blocked. On iPhone: Settings → Notifications → Sign Ready → Allow.':'That didn’t work. Check you’re online, then try again.';});});
+  c.appendChild(b);c.appendChild(msg);}
+ paint();return c;}
+
+/* ================= HOME ================= */
+function home(){shell('home');
+ var h=el('section','hello');
+ var hr=new Date().getHours(),g=hr<12?'Good morning':hr<18?'Good afternoon':'Good evening';
+ h.innerHTML='<p class="eyebrow">British Sign Language · for beginners</p><h1>'+g+(S.name?', '+esc(S.name):'')+'</h1>';
+ var st=streak();
+ h.appendChild(el('p','sub','Learn a few signs a day. Nothing here is a race.'));
+ main.appendChild(h);
+ main.appendChild(streakCard());
+ main.appendChild(buildCard());
+ var pn=pushNudge();if(pn)main.appendChild(pn);
+
+ if(S.cur){var c=el('section','card resume');c.innerHTML='<h2>Carry on where you left off</h2><p>'+esc(S.cur.title)+' · card '+(S.cur.pos+1)+' of '+S.cur.q.length+'</p>';
+  var row=el('div','row');row.appendChild(btn('big',"Carry on",function(){runSession();}));
+  row.appendChild(btn('ghost','Leave it for now',function(){S.cur=null;save();home();}));c.appendChild(row);main.appendChild(c);}
+
+ var d=due();
+ if(learned().length){var r=el('section','card fresh');
+  if(d.length){var n=Math.min(10,d.length);r.innerHTML='<h2>Today’s refresher</h2><p>'+plural(n,'question')+' from things you’ve already learned. Going over them again is what makes them stick.</p>';
+   r.appendChild(btn('big','Start the refresher',function(){startReview(d.slice(0,10),'Today’s refresher');}));}
+  else{r.innerHTML='<h2>Today’s refresher</h2><p>All caught up. New questions will be ready tomorrow.</p>';
+   r.appendChild(btn('ghost','Practise a few anyway',function(){startReview(shuffle(learned()).slice(0,8),'Extra practice');}));}
+  main.appendChild(r);
+  var tk=tricky();if(tk.length){var t=el('section','card tricky');t.innerHTML='<h2>Tricky ones</h2><p>'+plural(tk.length,'question')+' you’ve found hard before. We’ll go through them slowly.</p>';
+   t.appendChild(btn('ghost','Practise the tricky ones',function(){startReview(shuffle(tk).slice(0,10),'Tricky ones');}));main.appendChild(t);}
+ }
+
+ main.appendChild(goalMini());
+
+ var nx=nextStep();
+ if(nx){var ns=el('section','card next');ns.innerHTML='<p class="eyebrow">Your next step</p><h2>'+esc(nx.label)+'</h2><p>'+esc(nx.sub)+'</p>';ns.appendChild(btn('big',nx.btn,nx.fn));main.appendChild(ns);}
+
+ var list=el('section','units');list.appendChild(el('h2','sect','The units'));
+ COURSE.forEach(function(u){list.appendChild(unitRow(u));});
+ var f=el('button','unit final');f.type='button';
+ var fOpen=S.set.open||allPassed();
+ f.innerHTML='<span class="ic" aria-hidden="true">🎓</span><span class="ut"><b>Final test</b><small>'+(S.fin.passed?'Passed · best '+S.fin.best+'%':fOpen?'Ready when you are':'Opens when every unit test is passed')+'</small></span>'+(S.fin.passed?'<span class="tick">✓</span>':fOpen?'':'<span class="lock">🔒</span>');
+ f.disabled=!fOpen;f.addEventListener('click',function(){finalIntro();});list.appendChild(f);
+ main.appendChild(list);
+}
+function nextStep(){for(var i=0;i<COURSE.length;i++){var u=COURSE[i];if(!unitOpen(u))return null;
+  for(var j=0;j<u.lessons.length;j++){var l=u.lessons[j];if(!S.done[l.id])return {label:l.title,sub:'Unit '+(i+1)+': '+u.title+' · lesson '+(j+1)+' of '+u.lessons.length,btn:'Start this lesson',fn:function(l){return function(){startLesson(l);};}(l)};}
+  if(!unitPassed(u))return {label:'Unit '+(i+1)+' test',sub:u.title+'. Pass with '+PASS+'% to open the next unit.',btn:'Go to the test',fn:function(u){return function(){testIntro(u);};}(u)};}
+ if(!S.fin.passed)return {label:'The final test',sub:'Questions from every unit. Pass with '+PASS+'% to reach your goal.',btn:'Go to the final test',fn:finalIntro};
+ return null;}
+function unitRow(u){var b=el('button','unit');b.type='button';var open=unitOpen(u);
+ var dn=u.lessons.filter(function(l){return S.done[l.id];}).length;
+ var status=unitPassed(u)?'Test passed · '+S.ut[u.id].best+'%':!open?'Opens after the unit '+u.i+' test':dn===u.lessons.length?'Lessons done · test next':dn+' of '+u.lessons.length+' lessons done';
+ b.innerHTML='<span class="ic" aria-hidden="true" style="--uc:'+u.color+'">'+u.icon+'</span><span class="ut"><b>'+(u.i+1)+'. '+esc(u.title)+'</b><small>'+status+'</small><span class="bar"><i style="width:'+(dn/u.lessons.length*100)+'%"></i></span></span>'+(unitPassed(u)?'<span class="tick">✓</span>':open?'':'<span class="lock">🔒</span>');
+ b.disabled=!open;b.addEventListener('click',function(){unitView(u);});return b;}
+
+/* ================= UNIT ================= */
+function unitView(u){shell('home');
+ main.appendChild(btn('back','‹ Home',home));
+ var h=el('section','uhead');h.style.setProperty('--uc',u.color);h.innerHTML='<span class="ic big" aria-hidden="true">'+u.icon+'</span><div><p class="eyebrow">Unit '+(u.i+1)+' of '+COURSE.length+'</p><h1>'+esc(u.title)+'</h1><p class="sub">Goal stage: '+esc(u.stage)+'</p></div>';main.appendChild(h);
+ var ls=el('section','lessons');
+ u.lessons.forEach(function(l){var open=lessonOpen(l);var nq=l.cards.filter(function(c){return c.t!=='read';}).length;
+  var b=el('button','lesson'+(S.done[l.id]?' done':''));b.type='button';b.disabled=!open;
+  b.innerHTML='<span class="num">'+(S.done[l.id]?'✓':l.i+1)+'</span><span class="ut"><b>'+esc(l.title)+'</b><small>'+(S.done[l.id]?'Done · tap to go through it again':open?l.cards.length+' cards · '+nq+' questions':'Finish the lesson before this one first')+'</small></span>'+(open?'':'<span class="lock">🔒</span>');
+  b.addEventListener('click',function(){startLesson(l);});ls.appendChild(b);});
+ main.appendChild(ls);
+ var t=el('section','card');var ready=S.set.open||lessonsDone(u);var r=S.ut[u.id];
+ t.innerHTML='<h2>Unit test</h2><p>'+(r?'Best score: <b>'+r.best+'%</b>. '+(r.passed?'Passed. You can take it again any time.':'You need '+PASS+'% to pass.'):ready?'Shows what you’ve learned in this unit. You need '+PASS+'% to pass.':'Opens once every lesson above is done.')+'</p>';
+ var row=el('div','row');var tb=btn('big','Take the unit test',function(){testIntro(u);});tb.disabled=!ready;row.appendChild(tb);
+ var ms=S.missed[u.id];if(ms&&ms.length)row.appendChild(btn('ghost','Practise the '+plural(ms.length,'one')+' I missed',function(){startPractice(ms,u.title+': missed questions','unit:'+u.id);}));
+ t.appendChild(row);main.appendChild(t);}
+
+/* ================= SESSIONS ================= */
+/* item: {k:'read',h,again,recap} or {k:'q',id,again,recap} */
+function startLesson(l){var q=[];
+ var t=today(),earlier=learned().filter(function(id){return QS[id].l!==l&&S.box[id].due<=t;});
+ var rec=shuffle(earlier).slice(0,2);
+ if(rec.length){q.push({k:'intro',h:'<h3>Quick recap first</h3><p>Before we start, here '+(rec.length===1?'is a question':'are two questions')+' from something you’ve already learned.</p>'});
+  rec.forEach(function(id){q.push({k:'q',id:id,recap:true});});
+  q.push({k:'intro',h:'<h3>Now the new lesson</h3><p><b>'+esc(l.title)+'</b>. Read each card carefully. If you get a question wrong, we’ll go over it again.</p>'});}
+ l.cards.forEach(function(c){q.push(c.t==='read'?{k:'read',h:c.h}:{k:'q',id:c.id});});
+ begin({kind:'lesson',ref:l.id,title:l.title,mode:'learn',q:q});}
+function startReview(ids,title){var q=ids.map(function(id){return {k:'q',id:id};});begin({kind:'review',title:title,mode:'learn',q:q});}
+function startPractice(ids,title,ref){var q=[];ids.forEach(function(id){var t=QS[id]&&QS[id].teach;if(!QS[id])return;if(t)q.push({k:'read',h:t.h,again:true});q.push({k:'q',id:id});});
+ begin({kind:'practice',ref:ref,title:title,mode:'learn',q:q});}
+function startTest(u){var ids=shuffle(uq(u)).slice(0,20);begin({kind:'test',ref:u.id,title:'Unit '+(u.i+1)+' test: '+u.title,mode:'test',q:ids.map(function(id){return {k:'q',id:id};})});}
+function startFinal(){var ids=[];var per=[3,4,4,4,5,5,3,3];COURSE.forEach(function(u,i){ids=ids.concat(shuffle(uq(u)).slice(0,per[i]||2));});
+ begin({kind:'final',title:'Final test',mode:'test',q:shuffle(ids).map(function(id){return {k:'q',id:id};})});}
+function begin(s){s.pos=0;s.first={};s.right=0;s.wrong=0;s.n0=s.q.filter(function(i){return i.k==='q';}).length;s.stage='show';S.cur=s;save();sfx('tap');runSession();}
+
+function testIntro(u){shell('home');main.appendChild(btn('back','‹ '+u.title,function(){unitView(u);}));
+ var c=el('section','card intro');c.innerHTML='<h1>Unit '+(u.i+1)+' test</h1><p>'+esc(u.title)+'</p><ul class="plain"><li>Up to 20 questions from this unit.</li><li>After each one you’ll see the right answer.</li><li>You need <b>'+PASS+'%</b> to pass.</li><li>Any you miss can be practised afterwards, as many times as you like.</li></ul><p>Take your time. There is no clock.</p>';
+ c.appendChild(btn('big','Start the test',function(){startTest(u);}));main.appendChild(c);}
+function finalIntro(){shell('home');main.appendChild(btn('back','‹ Home',home));
+ var c=el('section','card intro');c.innerHTML='<h1>Final test</h1><p>31 questions from all '+COURSE.length+' units.</p><ul class="plain"><li>You’ll see the right answer after each one.</li><li>Pass with <b>'+PASS+'%</b> to reach your goal: <b>Signing with confidence</b>.</li><li>You can pause at any time and carry on later.</li></ul>';
+ c.appendChild(btn('big','Start the final test',startFinal));main.appendChild(c);}
+
+function runSession(){var s=S.cur;if(!s)return home();
+ if(s.pos>=s.q.length)return finish();
+ shell('home',true);
+ var top=el('div','sess');
+ var head=el('div','shead');
+ head.appendChild(btn('ghost small','Pause',function(){save();home();}));
+ var nQ=s.q.length;head.appendChild(el('span','count','Card '+(s.pos+1)+' of '+nQ));
+ top.appendChild(head);
+ top.appendChild(el('div','prog','<i style="width:'+(s.pos/nQ*100)+'%"></i>'));
+ top.appendChild(el('p','stitle',esc(s.title)));
+ main.appendChild(top);
+ var it=s.q[s.pos];
+ if(it.k==='q')showQ(it);else showRead(it);}
+
+function next(){var s=S.cur;s.pos++;s.stage='show';save();runSession();}
+
+function showRead(it){var c=el('article','card read'+(it.again?' again':''));
+ if(it.again)c.appendChild(el('p','flag','Let’s look at this again'));
+ var body=el('div','body',it.h);c.appendChild(body);
+ var row=el('div','row');row.appendChild(sayBtn(function(){return strip(it.h);}));c.appendChild(row);
+ var pr=body.querySelector('.practise'),isSign=/class="signword"/.test(it.h);var b=btn('big wait',pr?(isSign?'I’ve practised this sign':'I’ve practised this'):'I’ve read this',function(){sfx('soft');next();});
+ var vw=body.querySelector('.vowels');if(vw)vw.innerHTML=vowelSVG();
+ var len=strip(it.h).length;var ms=it.k==='intro'?800:Math.min(4000,1200+len*8);var timeOK=false,tapsOK=!pr;
+ function gate(){b.disabled=!(timeOK&&tapsOK);if(!b.disabled)b.classList.add('ready');}
+ if(pr)practiseDots(pr,function(){tapsOK=true;gate();});
+ b.disabled=true;b.style.setProperty('--wait',ms+'ms');setTimeout(function(){timeOK=true;gate();},ms);
+ c.appendChild(b);main.appendChild(c);
+ if(S.set.auto)speak(strip(it.h));}
+
+function showQ(it){var s=S.cur,info=QS[it.id];if(!info){return next();}var c=info.c;
+ var card=el('article','card q');
+ var lab=it.recap?'Recap':it.again?'Let’s try this one again':s.mode==='test'?'Question':'Check you’ve got it';
+ card.appendChild(el('p','flag'+(it.again?' warm':''),lab));
+ card.appendChild(el('h2','qtext',esc(c.q).replace(/“(.*?)”/g,'“$1”')));
+ var hintRow=el('div','row');hintRow.appendChild(sayBtn(function(){return c.q+'. '+optionsText(c,it);}));card.appendChild(hintRow);
+ var area=el('div','answers');card.appendChild(area);
+ var fb=el('div','fb');fb.hidden=true;card.appendChild(fb);
+ main.appendChild(card);
+ var done=function(ok,answerHtml){onAnswer(it,ok,answerHtml,fb);};
+ ({mc:qMC,tf:qTF,sort:qSort,order:qOrder,match:qMatch})[c.t](c,it,area,done);
+ if(S.set.auto)speak(c.q);}
+function optionsText(c,it){if(c.t==='mc')return (it.ord||range(c.o.length)).map(function(i){return c.o[i];}).join('. Or, ');if(c.t==='tf')return 'True or false?';return '';}
+
+function qMC(c,it,area,done){if(!it.ord)it.ord=shuffle(range(c.o.length));
+ it.ord.forEach(function(i,n){var b=btn('opt','<span class="key">'+'ABCD'[n]+'</span><span>'+esc(c.o[i])+'</span>',function(){
+  lockAll(area);b.classList.add(i===c.a?'ok':'no');if(i!==c.a)area.querySelectorAll('.opt')[it.ord.indexOf(c.a)].classList.add('ok');
+  done(i===c.a,esc(c.o[c.a]));});area.appendChild(b);});}
+function qTF(c,it,area,done){var g=el('div','tf');[[true,'True'],[false,'False']].forEach(function(p){var b=btn('opt tfb','<span>'+p[1]+'</span>',function(){
+  lockAll(area);b.classList.add(p[0]===c.a?'ok':'no');if(p[0]!==c.a)g.children[c.a?0:1].classList.add('ok');done(p[0]===c.a,c.a?'True':'False');});g.appendChild(b);});area.appendChild(g);}
+function lockAll(a){Array.prototype.forEach.call(a.querySelectorAll('button,select'),function(b){b.disabled=true;});}
+function checkBtn(area,fn){var b=btn('big','Check my answer',fn);b.disabled=true;area.appendChild(b);return b;}
+
+function qSort(c,it,area,done){if(!it.ord)it.ord=shuffle(range(c.items.length));var sel={};
+ area.appendChild(el('p','how','For each one, tap the group it belongs in.'));
+ var rows=[];it.ord.forEach(function(i){var r=el('div','sortrow');r.appendChild(el('p','stxt',esc(c.items[i][0])));
+  var ch=el('div','chips');c.bins.forEach(function(bn,bi){var b=btn('chip',esc(bn),function(){sel[i]=bi;Array.prototype.forEach.call(ch.children,function(x,xi){x.setAttribute('aria-pressed',xi===bi);});cb.disabled=Object.keys(sel).length<c.items.length;});b.setAttribute('aria-pressed','false');ch.appendChild(b);});
+  r.appendChild(ch);area.appendChild(r);rows.push([i,r]);});
+ var cb=checkBtn(area,function(){lockAll(area);cb.hidden=true;var ok=true;rows.forEach(function(p){var good=sel[p[0]]===c.items[p[0]][1];if(!good)ok=false;p[1].classList.add(good?'ok':'no');
+   if(!good)p[1].appendChild(el('p','fix','Belongs in: <b>'+esc(c.bins[c.items[p[0]][1]])+'</b>'));});
+  done(ok,'<ul>'+c.items.map(function(x){return '<li>'+esc(x[0])+' → <b>'+esc(c.bins[x[1]])+'</b></li>';}).join('')+'</ul>');});}
+
+function qOrder(c,it,area,done){if(!it.ord){var o;do{o=shuffle(range(c.items.length));}while(c.items.length>1&&o.every(function(v,i){return v===i;}));it.ord=o;}
+ var seq=[];area.appendChild(el('p','how','Tap them in the order they happen: first, then second, and so on.'));
+ var list=el('div','olist');area.appendChild(list);
+ var bs=it.ord.map(function(i){var b=btn('oitem','<span class="n"></span><span>'+esc(c.items[i])+'</span>',function(){if(seq.indexOf(i)>=0)return;seq.push(i);paint();});b.dataset.i=i;list.appendChild(b);return b;});
+ var row=el('div','row');var rs=btn('ghost small','Start again',function(){seq=[];paint();});row.appendChild(rs);area.appendChild(row);
+ var cb=checkBtn(area,function(){lockAll(area);cb.hidden=true;row.hidden=true;var ok=seq.every(function(v,k){return v===k;});
+  bs.forEach(function(b){var i=+b.dataset.i;b.classList.add(seq.indexOf(i)===i?'ok':'no');});
+  done(ok,'<ol>'+c.items.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ol>');});
+ function paint(){bs.forEach(function(b){var p=seq.indexOf(+b.dataset.i);b.querySelector('.n').textContent=p>=0?p+1:'';b.classList.toggle('picked',p>=0);});cb.disabled=seq.length<c.items.length;}}
+
+function qMatch(c,it,area,done){if(!it.ord)it.ord=shuffle(range(c.pairs.length));var rights=shuffle(range(c.pairs.length));var sel={};
+ area.appendChild(el('p','how','Choose the right answer for each one.'));
+ var rows=[];it.ord.forEach(function(i,n){var r=el('div','mrow');var id='m_'+it.id+'_'+n;
+  r.innerHTML='<label for="'+id+'">'+esc(c.pairs[i][0])+'</label>';var s=el('select');s.id=id;
+  s.innerHTML='<option value="">Choose…</option>'+rights.map(function(j){return '<option value="'+j+'">'+esc(c.pairs[j][1])+'</option>';}).join('');
+  s.addEventListener('change',function(){if(s.value==='')delete sel[i];else sel[i]=+s.value;cb.disabled=Object.keys(sel).length<c.pairs.length;});
+  r.appendChild(s);area.appendChild(r);rows.push([i,r]);});
+ var cb=checkBtn(area,function(){lockAll(area);cb.hidden=true;var ok=true;rows.forEach(function(p){var good=sel[p[0]]===p[0];if(!good)ok=false;p[1].classList.add(good?'ok':'no');
+   if(!good)p[1].appendChild(el('p','fix','Answer: <b>'+esc(c.pairs[p[0]][1])+'</b>'));});
+  done(ok,'<ul>'+c.pairs.map(function(x){return '<li>'+esc(x[0])+' → <b>'+esc(x[1])+'</b></li>';}).join('')+'</ul>');});}
+
+var PRAISE=['That’s right!','Well done!','Spot on.','Yes, that’s it.','Good, you’ve got it.'];
+function onAnswer(it,ok,answerHtml,fb){var s=S.cur,id=it.id,c=QS[id].c;
+ var firstHere=!(id in s.first);
+ if(firstHere){s.first[id]=ok;if(ok)s.right++;else s.wrong++;}
+ /* memory boxes */
+ if(firstHere){var r=S.box[id]||{b:0,w:0,r:0,due:today()};
+  if(ok){r.r++;r.b=Math.min(r.b+1,5);}else{r.w++;r.b=0;}
+  r.due=today()+INT[r.b];S.box[id]=r;}
+ var learn=s.mode==='learn';
+ if(!ok&&learn){var t=QS[id].teach,ins=[];if(t)ins.push({k:'read',h:t.h,again:true});
+  s.q.splice.apply(s.q,[s.pos+1,0].concat(ins));var at=Math.min(s.pos+1+ins.length+2,s.q.length);s.q.splice(at,0,{k:'q',id:id,again:true});}
+ s.stage='answered';save();sfx(ok?'right':'wrong');
+ fb.hidden=false;fb.className='fb '+(ok?'good':'bad');
+ var msg=ok?'<p class="verdict">✓ '+PRAISE[(s.pos+id.length)%PRAISE.length]+'</p>':
+  '<p class="verdict">Not quite, and that’s fine.</p>'+(c.t==='mc'||c.t==='tf'?'<p>The right answer is: <b>'+answerHtml+'</b></p>':'<div class="ans"><p>The right answer:</p>'+answerHtml+'</div>');
+ fb.innerHTML=msg+'<p class="why">'+c.why+'</p>'+(!ok&&learn?'<p class="note">We’ll read the card about this again, then try this question once more in a moment.</p>':'');
+ var nb=btn('big',!ok&&learn?'Read it again':'Next',next);fb.appendChild(nb);
+ if(S.set.auto)speak(strip(fb.innerHTML));
+ setTimeout(function(){try{fb.scrollIntoView({behavior:'smooth',block:'nearest'});}catch(e){}},60);}
+
+/* ---------- end of a session ---------- */
+function finish(){var s=S.cur;S.cur=null;var wasToday=!!S.days[today()];markDay();var stNow=streak();if(stNow>S.best)S.best=stNow;var b4=builtCount();pushPractised();
+ var pct=s.n0?Math.round(s.right/s.n0*100):100;
+ var wrongIds=Object.keys(s.first).filter(function(id){return !s.first[id];});
+ shell('home');var c=el('section','card result');
+ if(s.kind==='lesson'){var l=LES[s.ref];S.done[l.id]=true;save();
+  var pts=l.cards.filter(function(x){return x.t==='read';}).map(function(x){var m=x.h.match(/<h3>(.*?)<\/h3>/)||x.h.match(/class="signword">(.*?)<\/p>/);return m?m[1]:'';}).filter(Boolean);
+  c.innerHTML='<p class="eyebrow">Lesson complete</p><h1>'+esc(l.title)+'</h1>'+
+   '<p>You answered every question correctly in the end.'+(wrongIds.length?' '+plural(wrongIds.length,'question')+' needed another go. That’s normal, and they’ll come back in your refresher so they stick.':' All right first time. Brilliant.')+'</p>'+
+   '<h3>What this lesson covered</h3><ul class="plain ticks">'+pts.map(function(p){return '<li>'+p+'</li>';}).join('')+'</ul>';
+  var u=l.u,nl=u.lessons[l.i+1],row=el('div','row');
+  if(nl)row.appendChild(btn('big','Next lesson: '+esc(nl.title),function(){startLesson(nl);}));
+  else row.appendChild(btn('big','Go to the unit test',function(){testIntro(u);}));
+  row.appendChild(btn('ghost','Go through this lesson again',function(){startLesson(l);}));
+  row.appendChild(btn('ghost','Home',home));c.appendChild(row);}
+ else if(s.kind==='test'||s.kind==='final'){var passed=pct>=PASS;
+  if(s.kind==='test'){var r=S.ut[s.ref]||{best:0,passed:false};r.best=Math.max(r.best,pct);r.passed=r.passed||passed;S.ut[s.ref]=r;S.missed[s.ref]=wrongIds;}
+  else{S.fin.best=Math.max(S.fin.best,pct);S.fin.passed=S.fin.passed||passed;S.missed.final=wrongIds;}
+  save();
+  var u2=s.kind==='test'?UNI[s.ref]:null;
+  c.innerHTML='<p class="eyebrow">'+esc(s.title)+'</p><div class="score '+(passed?'pass':'')+'"><b>'+pct+'%</b><span>'+s.right+' out of '+s.n0+' right</span></div>'+
+   '<h1>'+(passed?(s.kind==='final'?'You did it. You’re signing with confidence!':'Passed! Well done.'):'Not quite there yet')+'</h1>'+
+   '<p>'+(passed?(u2&&COURSE[u2.i+1]?'The next unit is now open: <b>'+esc(COURSE[u2.i+1].title)+'</b>.':s.kind==='test'?'That was the last unit. The final test is next.':'Keep using the daily refresher so it all stays fresh.'):'You need '+PASS+'%. Practise the ones you missed, then try again. Every go makes it stick a bit more.')+'</p>';
+  if(wrongIds.length){var ul='<h3>The ones to go over</h3><ul class="plain missed">';wrongIds.forEach(function(id){var q=QS[id].c;ul+='<li><b>'+esc(q.q)+'</b><br>'+q.why+'</li>';});c.insertAdjacentHTML('beforeend',ul+'</ul>');}
+  var row2=el('div','row');
+  if(wrongIds.length)row2.appendChild(btn('big','Practise the '+plural(wrongIds.length,'one')+' I missed',function(){startPractice(wrongIds,'Practise what I missed',s.kind==='test'?'unit:'+s.ref:'final');}));
+  if(!passed)row2.appendChild(btn('ghost','Take the test again',function(){u2?startTest(u2):startFinal();}));
+  else if(u2&&COURSE[u2.i+1])row2.appendChild(btn(wrongIds.length?'ghost':'big','Start unit '+(u2.i+2),function(){unitView(COURSE[u2.i+1]);}));
+  else if(u2)row2.appendChild(btn('ghost','Go to the final test',finalIntro));
+  row2.appendChild(btn('ghost','Home',home));c.appendChild(row2);
+  if(passed&&s.kind==='final')c.classList.add('celebrate');}
+ else{save();
+  if(s.kind==='practice'&&s.ref){var key=s.ref.indexOf('unit:')===0?s.ref.slice(5):s.ref;if(S.missed[key]){S.missed[key]=[];save();}}
+  c.innerHTML='<p class="eyebrow">'+esc(s.title)+'</p><h1>All done</h1><p>'+(wrongIds.length?'You got '+s.right+' of '+s.n0+' right first time, and the rest right on the second go. The ones you found hard will come back again soon.':'Every one right first time. Lovely work.')+'</p>';
+  var row3=el('div','row');
+  if(s.kind==='practice'&&s.ref&&s.ref.indexOf('unit:')===0){var uu=UNI[s.ref.slice(5)];if(!unitPassed(uu))row3.appendChild(btn('big','Try the unit test again',function(){startTest(uu);}));}
+  if(s.kind==='practice'&&s.ref==='final'&&!S.fin.passed)row3.appendChild(btn('big','Try the final test again',startFinal));
+  row3.appendChild(btn(row3.children.length?'ghost':'big','Home',home));c.appendChild(row3);}
+ var np=newPieceBox(b4);if(np){var fr=c.querySelector('.row');c.insertBefore(np,fr);}
+ if(!wasToday){var sb=streakBox(stNow);c.insertBefore(sb,c.querySelector('.newpiece')||c.querySelector('.row'));}
+ main.appendChild(c);
+ sfx(c.classList.contains('celebrate')||/Passed|complete|All done/.test(c.textContent)?'done':'soft');if(!wasToday)setTimeout(function(){sfx('streak');},900);}
+
+/* ================= GOAL ================= */
+function stages(){var a=COURSE.map(function(u){return {t:u.stage,sub:'Pass the unit '+(u.i+1)+' test',done:unitPassed(u),u:u};});
+ a.push({t:'Signing with confidence',sub:'Pass the final test',done:S.fin.passed,fin:true});return a;}
+function goalMini(){var st=stages(),n=st.filter(function(x){return x.done;}).length;
+ var c=el('button','card goalmini');c.type='button';
+ c.innerHTML='<span class="eyebrow">Your goal</span><b class="gt">Signing with confidence</b><span class="gbar"><i style="width:'+(n/st.length*100)+'%"></i></span><small>'+n+' of '+st.length+' stages reached · tap to see the path</small>';
+ c.addEventListener('click',goalView);return c;}
+function goalView(){shell('goal');var st=stages(),n=st.filter(function(x){return x.done;}).length;
+ var h=el('section','hello');h.innerHTML='<p class="eyebrow">Your goal</p><h1>Signing with confidence</h1><p class="sub">Each unit you pass moves you one stage along. Pass the final test and you’re there.</p>';main.appendChild(h);
+ var p=el('ol','path');var curSet=false;
+ st.forEach(function(x,i){var li=el('li',x.done?'done':!curSet?'now':'');if(!x.done&&!curSet)curSet=true;
+  li.innerHTML='<span class="dot">'+(x.done?'✓':i+1)+'</span><div><b>'+esc(x.t)+'</b><small>'+esc(x.sub)+(x.done?' · done':li.className==='now'?' · you are here':'')+'</small></div>';
+  if(li.className==='now'){li.appendChild(btn('ghost small','Go',function(){x.fin?finalIntro():unitView(x.u);}));}
+  p.appendChild(li);});
+ main.appendChild(p);
+ if(n===st.length)main.appendChild(el('section','card celebrate','<h2>Goal reached 🎉</h2><p>Keep doing the daily refresher. A few questions a day keeps everything fresh.</p>'));}
+
+/* ================= LOOK IT UP ================= */
+function lookView(){shell('look');var h=el('section','hello');h.innerHTML='<p class="eyebrow">Look it up</p><h1>Quick reference</h1><p class="sub">Every sign in the course, plus Deaf awareness tips. Tap “Watch” to see a sign being made.</p>';main.appendChild(h);
+ var sw=el('div','search');sw.innerHTML='<label for="q">Search</label><input id="q" type="search" placeholder="Try “thank”, “nurse” or “Monday”" autocomplete="off">';main.appendChild(sw);
+ var box=el('div','look');main.appendChild(box);var inp=$('#q',sw);
+ function paint(){var term=inp.value.trim().toLowerCase();box.innerHTML='';var any=false;
+  LOOKUP.forEach(function(sec){var lines=sec[1].filter(function(t){return !term||t.toLowerCase().indexOf(term)>=0||sec[0].toLowerCase().indexOf(term)>=0;});if(!lines.length)return;any=true;
+   var d=el('details','lk');if(term)d.open=true;d.innerHTML='<summary>'+esc(sec[0])+'<small>'+lines.length+'</small></summary>';
+   var ul=el('ul');lines.forEach(function(t){var li=el('li');var e=esc(t);if(term){var re=new RegExp('('+term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','ig');e=e.replace(re,'<mark>$1</mark>');}li.innerHTML=e;ul.appendChild(li);});
+   d.appendChild(ul);var sb=sayBtn(function(){return sec[0]+'. '+lines.join('. ');});d.appendChild(sb);box.appendChild(d);});
+  var keys=Object.keys(SIGNS).filter(function(k){var x=SIGNS[k];return !term||(x.w+' '+strip(x.how)).toLowerCase().indexOf(term)>=0;}).sort(function(a,b){return SIGNS[a].w.localeCompare(SIGNS[b].w);});
+  if(keys.length){any=true;var d2=el('details','lk');d2.open=!!term;d2.innerHTML='<summary>Every sign, A to Z<small>'+keys.length+'</small></summary>';var ul2=el('ul','az');keys.forEach(function(k){var x=SIGNS[k];var li=el('li');li.innerHTML='<b>'+x.w+'</b> '+strip(x.how)+' <a class="watch sm" href="'+DICT+x.slug+'" target="_blank" rel="noopener">Watch</a>';ul2.appendChild(li);});d2.appendChild(ul2);box.insertBefore(d2,box.firstChild);}
+  if(!any)box.appendChild(el('p','empty','Nothing found for “'+esc(inp.value)+'”. Try a shorter word.'));}
+ inp.addEventListener('input',paint);paint();}
+
+/* ================= SETTINGS ================= */
+function setView(){shell('set');var h=el('section','hello');h.innerHTML='<p class="eyebrow">Settings</p><h1>Make it comfortable</h1>';main.appendChild(h);
+ var c=el('section','card sets');
+ c.innerHTML='<div class="field"><label for="nm">Your name (for the greeting)</label><input id="nm" type="text" autocomplete="given-name"></div>'+
+ '<div class="field"><p class="lab">Text size</p><div class="seg" id="sz"></div></div>'+
+ '<div class="field"><p class="lab">Colours</p><div class="seg" id="th"></div></div>'+
+ '<div class="field tog"><label for="snd">Sound effects</label><input id="snd" type="checkbox"></div>'+
+ '<div class="field tog"><label for="au">Read every card out loud automatically</label><input id="au" type="checkbox"></div>'+
+ '<div class="field tog"><label for="op">Let me open any unit, in any order</label><input id="op" type="checkbox"></div>';
+ main.appendChild(c);
+ var nm=$('#nm');nm.value=S.name;nm.addEventListener('input',function(){S.name=nm.value.trim().slice(0,30);save();});
+ var sz=$('#sz');['Normal','Large','Larger','Largest'].forEach(function(t,i){var b=btn('chip',t,function(){S.set.size=i;applySet();save();setView();});b.setAttribute('aria-pressed',S.set.size===i);b.style.fontSize=(0.85+i*0.12)+'rem';sz.appendChild(b);});
+ var th=$('#th');[['auto','Match my phone'],['light','Light'],['dark','Dark']].forEach(function(p){var b=btn('chip',p[1],function(){S.set.theme=p[0];applySet();save();setView();});b.setAttribute('aria-pressed',S.set.theme===p[0]);th.appendChild(b);});
+ var au=$('#au');au.checked=S.set.auto;au.addEventListener('change',function(){S.set.auto=au.checked;save();if(au.checked)speak('Cards will now be read out loud.');});
+ var op=$('#op');op.checked=S.set.open;op.addEventListener('change',function(){S.set.open=op.checked;save();});
+ var snd=$('#snd');snd.checked=S.set.sound;snd.addEventListener('change',function(){S.set.sound=snd.checked;save();sfx('right');});
+ main.appendChild(reminderCard());
+
+ var sv=el('section','card');sv.innerHTML='<h2>Save code</h2><p>Your progress saves on this device by itself. To carry it to another phone or computer, copy this code there and paste it below.</p>';
+ var code=el('textarea','code');code.id='code';code.readOnly=true;code.rows=3;code.value=exportCode();sv.appendChild(code);
+ var r1=el('div','row');var msg=el('p','msg');
+ r1.appendChild(btn('ghost','Copy my code',function(){code.select();try{navigator.clipboard.writeText(code.value).then(function(){msg.textContent='Copied.';},function(){msg.textContent='Selected. Now copy it with your phone’s Copy button.';});}catch(e){msg.textContent='Selected. Now copy it with your phone’s Copy button.';}}));
+ sv.appendChild(r1);
+ var inp=el('textarea','code');inp.id='paste';inp.rows=3;inp.placeholder='Paste a save code here';sv.appendChild(inp);
+ var r2=el('div','row');r2.appendChild(btn('ghost','Load this code',function(){var s=importCode(inp.value);if(s){S=s;save();applySet();msg.textContent='Progress loaded.';setTimeout(home,700);}else msg.textContent='That code didn’t work. Check it was copied in full.';}));
+ sv.appendChild(r2);sv.appendChild(msg);main.appendChild(sv);
+
+ var rs=el('section','card');rs.innerHTML='<h2>Start again from scratch</h2><p>This clears all progress on this device.</p>';
+ var r3=el('div','row');var b1=btn('ghost danger','Clear my progress',function(){b1.hidden=true;b2.hidden=false;b3.hidden=false;});
+ var b2=btn('big danger','Yes, clear everything',function(){var keep=S.set,nm2=S.name;S=blank();S.set=keep;S.name=nm2;save();home();});
+ var b3=btn('ghost','No, keep it',function(){b1.hidden=false;b2.hidden=true;b3.hidden=true;});b2.hidden=b3.hidden=true;
+ r3.appendChild(b1);r3.appendChild(b2);r3.appendChild(b3);rs.appendChild(r3);main.appendChild(rs);}
+function exportCode(){var o={v:1,name:S.name,done:S.done,box:S.box,ut:S.ut,fin:S.fin,missed:S.missed,days:S.days,best:S.best,set:S.set};
+ try{return 'SR1-'+btoa(unescape(encodeURIComponent(JSON.stringify(o))));}catch(e){return '';}}
+function importCode(t){try{t=t.trim().replace(/\s+/g,'');if(t.indexOf('SR1-')!==0)return null;var o=JSON.parse(decodeURIComponent(escape(atob(t.slice(4)))));if(o.v!==1)return null;var b=blank();for(var k in o)if(k in b)b[k]=o[k];return b;}catch(e){return null;}}
+
+window.RR={S:function(){return S;},QS:QS,home:home,setView:setView};
+if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(function(){});
+home();
+})();
+
+</script>
